@@ -1,0 +1,137 @@
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="css/estilo.css">
+  <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+  <link rel="icon" href="img/logocirculo.png">
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+  <script src="js/firebase.js"></script>
+  <title>Sweet House</title>
+</head>
+
+<body class="body">
+  <header class="header">
+    <div class="logos">
+      <img src="img/bolo.png" id="imgnavbolo"></a>
+      <img src="img/logo.png" id="imgnavlogo"></a>
+    </div>
+    <div class="navheader" id="header">
+      <li class="nav-item">
+        <a class="nav-link" href="login.html">Login</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="cadastro.html">Cadastrar-se</a>
+      </li>
+    </div>
+    <div class="navheaderLogin" id="navheaderLogin">
+      <div class="login">
+        <li class="nav-item">
+          <a class="nav-link" href="encomendasUsuario.html"><img src="img/cupcake.png" height="25px"
+              width="25px">Encomendas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="perfil.html"><img src="img/user.png" height="25px" width="25px">Meus dados</a>
+        </li>
+      </div>
+      <li class="nav-item">
+        <button class="nav-link" id="logOut" onclick="LogOut()"><img src="img/logout.png" height="25px"
+          width="25px" style="margin-top: 10px;">Sair</button>
+      </li>
+    </div>
+  </header>
+  <div class="containerIndex">
+    <h2 id="titulocontainer">Conheça os nossos produtos</h2>
+    <div class="card-produtos">
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <a href="bolos.html">
+            <h5 class="card-title">Bolos</h5>
+            <img src="img/bolo.jpg" class="card-img-top" alt="...">
+            <a href="#" class="btnProduto">Ver todos</a>
+          </a>
+        </div>
+      </div>
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <a href="doces.html">
+            <h5 class="card-title">Doces</h5>
+            <img src="img/doces.png" class="card-img-top" alt="...">
+            <a href="#" class="btnProduto">Ver todos</a>
+          </a>
+        </div>
+      </div>
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <a href="tortas.html">
+            <h5 class="card-title">Tortas</h5>
+            <img src="img/tortas.jpg" class="card-img-top" alt="...">
+            <a href="tortas.html" class="btnProduto">Ver todos</a>
+          </a>
+        </div>
+      </div>
+      <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <a href="sobremesas.html">
+            <h5 class="card-title">Sobremesas</h5>
+            <img src="img/sobremesas.jpg" class="card-img-top" alt="...">
+            <a href="#" class="btnProduto">Ver todos</a>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="containerIndex">
+    <h2 id="titulocontainer">Faça sua encomenda</h2>
+    <hr id="hrIndex">
+    <img src="img/expEncomenda.png" style="width:inherit">
+  </div>
+  <footer class="footer">
+    <div class="unidades">
+      <p>Nossas unidades</p>
+      <ul>
+        <li>Pinheiros</li>
+        <li>Liberdade</li>
+        <li>Tatuapé</li>
+        <li>Vila Olímpia</li>
+        <li>Grajaú</li>
+      </ul>
+      <ul>
+        <li>Pinheiros</li>
+        <li>Liberdade</li>
+        <li>Tatuapé</li>
+        <li>Vila Olímpia</li>
+        <li>Grajaú</li>
+      </ul>
+    </div>
+    <div class="redessociais">
+
+    </div>
+    <div class="contato">
+
+    </div>
+  </footer>
+  <script>
+    function LogOut() {
+      firebase.auth().signOut().then(() => {
+        window.location.href = "index.html";
+      }).catch((error) => {
+      });
+    }
+  </script>
+  <script>
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        document.getElementById("header").style.display = "none";
+        document.getElementById("navheaderLogin").style.display = "flex";
+      } else {
+        document.getElementById("navheaderLogin").style.display = "none";
+        document.getElementById("header").style.display = "flex";
+      }
+    });
+  </script>
+</body>
+
+</html>

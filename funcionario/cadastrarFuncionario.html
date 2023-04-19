@@ -1,0 +1,139 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/estilo.css">
+    <link rel="icon" href="../img/logocirculo.png">
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+    <script src="../js/firebase.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
+        integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>Cadastro funcionário</title>
+</head>
+
+<body class="body">
+    <div class="containerDados">
+        <a href="indexFuncionario.html"><img src="../img/bolo.png" height="100px" width="100px"></a>
+        <h1 style="margin: 20px 0px 0px 0px;">Funcionário</h1>
+        <form name="formLogin" class="formCad">
+            <label class="required" for="nome">Nome:</label>
+            <input class="form" type="text" id="nome" name="nome" required>
+            <label class="required" for="email" id="emaillabel">E-mail:</label>
+            <input class="form" type="email" id="email" name="email" required>
+            <p id="erroemail">Campo preenchido incorretamente</p>
+            <label class="required" for="matricula">Matrícula:</label>
+            <input class="form" type="text" id="matricula" name="matricula" required>
+            <label class="required" for="tipo">Tipo:</label>
+            <div class="tipo">
+                <select name="tipo" id="tipo">
+                    <option value="">Selecione</option>
+                    <option value="Funcionário">Funcionário</option>
+                    <option value="Gerente">Gerente</option>
+                </select>
+            </div>
+            <div class="unidadeForm">
+                <label class="required" for="unidade">Unidade:</label>
+                <select name="unidadeForm" id="unidadeForm">
+                    <option id="option" value="">Selecione</option>
+                    <option value="Grajaú">Grajaú</option>
+                    <option value="Guarulhos">Guarulhos</option>
+                    <option value="Itaquera">Itaquera</option>
+                    <option value="Jabaquara">Jabaquara</option>
+                    <option value="Liberdade">Liberdade</option>
+                    <option value="Osasco">Osasco</option>
+                    <option value="Pinheiros">Pinheiros</option>
+                    <option value="São Bento">São Bento</option>
+                    <option value="Tatuapé">Tatuapé</option>
+                    <option value="Vila Olímpia">Vila Olímpia</option>
+                </select>
+            </div>
+        </form>
+        <button class="buttonInput" onclick="inserir()">Cadastrar</button>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+            window.location.href = "loginFuncionario.html";
+        }
+    });
+
+
+    function inserir() {
+        let db = firebase.firestore();
+        let cnome = document.getElementById("nome").value;
+        let cemail = document.getElementById("email").value;
+        let email = cemail.toLowerCase();
+        let cmatricula = document.getElementById("matricula").value;
+        let ctipo = document.getElementById("tipo").value;
+        let cunidade = document.getElementById("unidadeForm").value;
+        let cstatus = "INATIVO";
+        if ((cnome != '') && (cemail != '') && (cmatricula != '') && (ctipo != '') && (cunidade != '') && (cunidade != "Selecione") && (ctipo != "Selecione")) {
+            db.collection("funcionarios").where("email", "==", cemail).get().then((querySnapshot) => {
+                if (querySnapshot.empty) {
+                    addFuncionario(cemail, cnome, cmatricula, ctipo, cunidade, cstatus);
+                } else {
+                    Swal.fire(
+                        'Atenção',
+                        'O e-mail já está cadastrado',
+                        'error'
+                    )
+                }
+            });
+        } else {
+            Swal.fire(
+                'Atenção',
+                'Campos obrigatórios não preenchidos ou preenchidos incorretamente',
+                'error'
+            )
+        }
+    }
+    function addFuncionario(cemail, cnome, cmatricula, ctipo, cunidade, cstatus) {
+        let db = firebase.firestore();
+        db.collection("funcionarios").add({
+            nome: cnome,
+            email: cemail,
+            matricula: cmatricula,
+            tipo: ctipo,
+            unidade: cunidade,
+            status: cstatus,
+        });
+        addGerente(cunidade, cemail);
+        Swal.fire({
+            title: 'Funcionário cadastrado!',
+            html: 'O funcionário foi cadastrado com sucesso.',
+            icon: 'success',
+            confirmButtonColor: '#2ecc71',
+            focusConfirm: false,
+            confirmButtonText: 'Confirmar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            }
+        });
+    }
+    function addGerente(cunidade, cemail) {
+        let db = firebase.firestore();
+        db.collection("lojas").where("unidade", "==", cunidade).get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                var cgerente = (doc.data().gerente);
+                db.collection("funcionarios").where("email", "==", cemail).get().then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        var dados = db.collection("funcionarios").doc(doc.id);
+                        return dados.update({
+                            gerente: cgerente,
+                        });
+                    });
+                });
+            });
+        });
+    }
+</script>
+
+</html>

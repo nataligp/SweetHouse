@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/estilo.css">
+    <link rel="icon" href="../img/logocirculo.png">
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+    <script src="../js/firebase.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <title>Login</title>
+</head>
+
+<body class="body">
+    <div class="containerDados">
+        <img src="../img/bolo.png" height="100px" width="100px">
+        <h1 style="margin: 20px 0px 0px 0px;">Login</h1>
+        <p>Funcionário Sweet House</p>
+        <form name="login" method="post" class="formCad">
+            <label class="required" for="email">E-mail:</label>
+            <input type="email" id="email" placeholder="seuemail@mail.com" class="form" required>
+            <label class="required" for="senha">Senha:</label>
+            <input type="password" id="senha" class="form" required>
+        </form>
+        <button id="login" class="buttonInput" onclick="verificaAtividade()">Entrar</button>
+    </div>
+</body>
+<script>
+    function verificaAtividade() {
+        var db = firebase.firestore();
+        var email = document.getElementById("email").value;
+        db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
+            if (querySnapshot.empty) {
+                acessoNegado();
+            }
+            else {
+                querySnapshot.forEach((doc) => {
+                    status = doc.data().status;
+                    if (status == "BLOQUEADO") {
+                        acessoNegado();
+                    } else if (status == "INATIVO") {
+                        cadastrar();
+                    }
+                    else if (status == "ATIVO") {
+                        login();
+                    }
+                });
+            }
+        });
+    }
+
+    function acessoNegado() {
+        Swal.fire(
+            'Acesso negado',
+            'Suas credenciais estão bloqueadas ou inválidas para esse acesso',
+            'warning'
+        )
+    }
+
+    function login() {
+        var auth = null;
+        firebase.auth().signInWithEmailAndPassword(document.getElementById("email").value, document.getElementById("senha").value)
+            .then(function (user) {
+                auth = user;
+                window.location.href = "indexFuncionario.html";
+            })
+            .catch(function (error) {
+                Swal.fire(
+                    'Atenção',
+                    'Credenciais inválidas',
+                    'error'
+                )
+            });
+    }
+
+    function cadastrar() {
+        var auth = null;
+        firebase.auth().createUserWithEmailAndPassword(document.getElementById("email").value, document.getElementById("senha").value).then(function (user) {
+            auth = user;
+            redefinirStatus();
+        }).catch(function (error) {
+            Swal.fire(
+                'Atenção',
+                'Campos preenchidos incorretamente.',
+                'error'
+            )
+        });
+    }
+
+    function redefinirStatus() {
+        let db = firebase.firestore();
+        let cstatus = "ATIVO";
+        let email = document.getElementById("email").value;
+        db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                var dados = db.collection("funcionarios").doc(doc.id);
+                return dados.update({
+                    status: cstatus,
+                }).then(() => {
+                    window.location.href = "indexFuncionario.html";
+                });
+            });
+        });
+    }
+</script>
+
+</html>

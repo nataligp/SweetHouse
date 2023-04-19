@@ -1,0 +1,122 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/estilo.css">
+    <link rel="icon" href="../img/logocirculo.png">
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
+        integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+    <script src="../js/firebase.js"></script>
+    <title>Perfil</title>
+</head>
+
+<body class="bodyAtlCad">
+    <div class="containerDados">
+        <a href="indexFuncionario.html"><img src="../img/bolo.png" height="100px" width="100px"></a>
+        <h1 style="margin: 20px 0px 0px 0px;">Dados do funcionário</h1>
+        <form name="formLogin" class="formCad">
+            <label class="required" for="nome">Nome:</label>
+            <input class="form" type="text" id="nome" name="nome" required>
+            <label class="required" for="email">E-mail:</label>
+            <input class="form" type="email" id="email" name="email" required>
+            <label class="required" for="matricula">Matrícula:</label>
+            <input class="form" type="text" id="matricula" name="matricula" required>
+            <label class="required" for="tipo">Tipo:</label>
+            <div class="tipo">
+                <select name="tipo" id="tipo">
+                    <option value="">Selecione</option>
+                    <option value="Funcionário">Funcionário</option>
+                    <option value="Gerente">Gerente</option>
+                </select>
+            </div>
+            <div class="unidadeForm">
+                <label class="required" for="unidade">Unidade:</label>
+                <select name="unidadeForm" id="unidadeForm">
+                    <option id="option" value="">Selecione</option>
+                    <option value="Grajaú">Grajaú</option>
+                    <option value="Guarulhos">Guarulhos</option>
+                    <option value="Itaquera">Itaquera</option>
+                    <option value="Jabaquara">Jabaquara</option>
+                    <option value="Liberdade">Liberdade</option>
+                    <option value="Osasco">Osasco</option>
+                    <option value="Pinheiros">Pinheiros</option>
+                    <option value="São Bento">São Bento</option>
+                    <option value="Tatuapé">Tatuapé</option>
+                    <option value="Vila Olímpia">Vila Olímpia</option>
+                </select>
+            </div>
+        </form>
+        <button class="buttonInput" onclick="editarPerfil()" id="edit">Editar dados</button>
+        <button class="buttonInput" onclick="bloquearUser()" id="edit">Bloquear usuário</button>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="sweetalert2.all.min.js"></script>
+<script>
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var email = url.searchParams.get("email");
+    var db = firebase.firestore();
+    db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+            document.getElementById("nome").value = doc.data().nome;
+            document.getElementById("email").value = doc.data().email;
+            document.getElementById("matricula").value = doc.data().matricula;
+            document.getElementById("tipo").value = doc.data().tipo;
+            document.getElementById("unidadeForm").value = doc.data().unidade;
+        });
+    })
+</script>
+<script>
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var email = url.searchParams.get("email");
+    function editarPerfil() {
+        let db = firebase.firestore();
+        let cnome = document.getElementById("nome").value;
+        var cemail = document.getElementById("email").value;
+        let email = cemail.toLowerCase();
+        let cmatricula = document.getElementById("matricula").value;
+        let ctipo = document.getElementById("tipo").value;
+        let cunidade = document.getElementById("unidadeForm").value;
+        db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                var dados = db.collection("funcionarios").doc(doc.id);
+                return dados.update({
+                    nome: cnome,
+                    email: cemail,
+                    matricula: cmatricula,
+                    tipo: ctipo,
+                    unidade: cunidade,
+                }).then(() => {
+                    window.location.href = "equipe.html";
+                });
+            });
+        });
+    }
+</script>
+<script>
+    function bloquearUser(){
+        var url_string = window.location.href;
+    var url = new URL(url_string);
+    var email = url.searchParams.get("email");
+    db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                var dados = db.collection("funcionarios").doc(doc.id);
+                return dados.update({
+                    status: "BLOQUEADO",
+                }).then(() => {
+                    window.location.href = "equipe.html";
+                });
+            });
+        });
+    }
+</script>
+
+</html>

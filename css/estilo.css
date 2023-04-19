@@ -1,0 +1,431 @@
+.body {
+    background-color: #732F16;
+    margin: 0%;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.bodyAtlCad {
+    background-color: #732F16;
+    margin: 0%;
+    display: grid;
+}
+
+.containerIndex {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 95%;
+    height: fit-content;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.containerDados h1 {
+    font-weight: normal;
+}
+
+#logonav {
+    height: 150px;
+    width: 150px;
+}
+
+#titulonav {
+    color: #732F16;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    align-self: last baseline;
+    font-weight: lighter;
+    margin-left: 20px;
+
+}
+
+#titulocontainer {
+    color: #732F16;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin: 20px;
+}
+
+.header {
+    background-color: #FFF;
+    flex-direction: row;
+    display: flex;
+    justify-content: space-between;
+    padding: 30px;
+    height: 20%;
+    width: 100%;
+}
+
+.navheaderLogin { 
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+    align-items: flex-start;
+    width: 20%;
+}
+
+.logos {
+    display: flex;
+    width: 60%;
+    justify-content: space-between;
+}
+
+.navheader {
+    display: none;
+    flex-direction: row;
+    list-style: none;
+    width: 15%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navheaderFuncionario {
+    display: flex;
+    flex-direction: row;
+    list-style: none;
+    align-items: center;
+    justify-content: space-between;
+    align-self: flex-start;
+    width: 100%;
+}
+
+.card-produtos {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    width: 90%;
+}
+
+.containerDados {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: fit-content;
+    height: fit-content;
+    background-color: #fff;
+    border-radius: 20px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    color: #732F16;
+    padding: 30px;
+    margin-top: 20px;
+    margin-left: 17px;
+    justify-self: center;
+}
+
+.unidadeForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.tipo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.tipo select {
+    border: none;
+    border-bottom: 2px solid #F9C4AF;
+    margin: 10px 0px 10px -3px;
+    font-size: large;
+
+}
+.gerente {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.gerente select {
+    border: none;
+    border-bottom: 2px solid #F9C4AF;
+    margin: 10px 0px 10px -3px;
+    font-size: large;
+
+}
+
+.unidadeForm select {
+    border: none;
+    border-bottom: 2px solid #F9C4AF;
+    margin: 10px 0px 10px -3px;
+    font-size: large;
+}
+
+.container1 p {
+    margin-top: 10px;
+}
+
+.buttonshome {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    margin-top: 20px;
+    font-family: Arial, Helvetica, sans-serif
+}
+
+.formCad {
+    display: flex;
+    flex-direction: column;
+    align-self: center;
+    padding: 30px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    width: 400px;
+    font-size: larger;
+}
+
+.buttonhome {
+    display: flex;
+    background-color: #732F16;
+    color: #fff;
+    height: 40px;
+    border-radius: 10px;
+    border: none;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    padding: 5px;
+}
+
+#imgnavbolo {
+    height: 110px;
+    width: 110px;
+    align-self: center;
+}
+
+#imgnavlogo {
+    height: 90px;
+    align-self: center;
+    margin-left: 10%;
+}
+
+form label {
+    margin-top: 10px;
+}
+
+form input {
+    border: none;
+    border-bottom: 2px solid #F9C4AF;
+    margin: 10px 0px 10px 0px;
+    font-size: large;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-text-fill-color: #000;
+    -webkit-box-shadow: 0 0 0px 40rem #ffff inset;
+}
+
+input:disabled {
+    background-color: #FFF;
+}
+
+textarea:focus,
+input:focus,
+select:focus {
+    box-shadow: 0 0 0 0;
+    outline: 0;
+}
+
+.buttonInput {
+    background-color: #F46E6E;
+    width: fit-content;
+    padding: 5px 15px 5px 15px;
+    border-radius: 10px;
+    border: none;
+    align-self: flex-end;
+    font-size: large;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    margin: -10px 35px 30px 0px;
+    color: #FFF;
+}
+
+.buttonInput a {
+    text-decoration: none;
+    color: #FFF;
+}
+
+.buttonExcluir {
+    background-color: #d63031;
+    color: #FFF;
+    width: fit-content;
+    padding: 5px 15px 5px 15px;
+    border-radius: 10px;
+    border: none;
+    align-self: center;
+    font-size: large;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.required::after {
+    content: " *";
+    color: #ff0000;
+}
+
+.btnProduto {
+    color: #F46E6E;
+    font-size: small;
+    margin-left: 36%;
+    margin-top: 10px;
+    text-decoration: underline;
+}
+
+.footer {
+    display: none;
+    background-color: #fff;
+    color: #732F16;
+    padding: 30px;
+}
+
+#hrIndex {
+    width: 30%;
+    background-color: #F46E6E;
+    height: 2px;
+    margin-top: -10px;
+    border: none;
+}
+
+.swal2-container.swal2-center>.swal2-popup {
+    font-family: 'Calibri'
+}
+
+#atualizarSenha {
+    color: #732F16;
+    margin-bottom: 10px;
+}
+
+.card-body:hover img {
+    opacity: 0.5;
+}
+
+#logOut {
+    background-color: white;
+    border: none;
+    display: flex;
+    align-items: end;
+}
+
+#logOut img {
+    margin-right: 10px;
+}
+
+
+.login {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.menuFuncionario {
+    display: none;
+    flex-direction: row;
+    justify-content: space-evenly;
+    color: #FFF;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 50%;
+}
+
+#private {
+    display: none;
+    flex-direction: row;
+    justify-content: space-evenly;
+    color: #FFF;
+    width: 40%;
+}
+
+.menuFuncionario a {
+    color: #FFF;
+}
+
+.menuFuncionario a:hover {
+    color: #F46E6E;
+}
+
+.menuFuncionario hr {
+    height: 15px;
+}
+
+.main {
+    display: flex;
+    background-color: #FFF;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+.main img {
+    width: 300px;
+    height: 300px;
+    align-self: center;
+}
+
+#unidade {
+    border: none;
+    margin-left: 9px;
+}
+
+.navUnidade {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    align-self: flex-end;
+    margin-top: 10px;
+}
+.funcionario{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.main{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.topo{
+    display: flex;
+    flex-direction: column;   
+    background-color: #732F16;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+.topo h1, .topo input{
+    font-size: x-large;
+    border: none;
+    background-color: #732F16;
+    color: #FFF;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+}
+#btnAdd{
+    background-color: #d63031;
+    color: #FFF;
+    width: fit-content;
+    padding: 10px;
+    border-radius: 5px;
+    margin: 20px 30px 0px 0px;
+    align-self: end;
+}
+.equipe{
+    align-self: center;
+    margin-top: 40px;
+}
+table td, table th{
+    padding: 20px;
+}
+#erroemail{
+    color: #d63031;
+    display: none;    
+    font-size: medium;
+    margin-top: -10px;
+}

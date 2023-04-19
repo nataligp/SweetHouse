@@ -1,0 +1,183 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/estilo.css">
+    <link rel="icon" href="img/logocirculo.png">
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
+        integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+    <script src="js/firebase.js"></script>
+    <script src="js/mascara.js"></script>
+    <title>Atualizar cadastro</title>
+</head>
+
+<body class="bodyAtlCad">
+    <div class="containerDados">
+        <a href="index.html"><img src="img/bolo.png" height="100px" width="100px"></a>
+        <h1 style="margin: 20px 0px 0px 0px;">Meus dados</h1>
+        <form name="formEditar" class="formCad" method="post">
+            <label class="required" for="nome">Nome:</label>
+            <input class="form" type="text" id="nome" name="nome">
+            <label class="required" for="telefone">Telefone:</label>
+            <input class="form" type="text" id="telefone" name="telefone">
+            <label class="required" for="CEP">CEP:</label>
+            <input class="form" type="text" id="CEP" name="CEP">
+            <label class="required" for="rua">Rua:</label>
+            <input class="form" type="text" name="rua" id="rua">
+            <label class="required" class="required" for="numero">Número:</label>
+            <input class="form" type="text" name="numero" id="numero">
+            <label class="required" for="bairro">Bairro:</label>
+            <input class="form" type="text" name="bairro" id="bairro">
+            <label class="required" for="cidade">Cidade:</label>
+            <input class="form" type="text" name="cidade" id="cidade">
+        </form>
+        <button class="buttonInput" onclick="editarPerfil()" id="edit">Atualizar meus dados</button>
+        <a href="#" id="atualizarSenha" onclick="mudarSenha()">Mudar minha senha</a>
+        <button class="buttonExcluir" onclick="alertaExcluir()">Excluir conta</button>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="sweetalert2.all.min.js"></script>
+<script src="js/mascara.js"></script>
+<script src="js/cep.js"></script>
+
+<script>
+    function alertaExcluir() {
+        Swal.fire({
+            title: 'Excluir conta',
+            html: 'Ao executar essa ação, sua conta será deletada do nosso sistema permanentemente. Insira sua senha para executar essa ação.',
+            icon: 'warning',
+            input: 'password',
+            showCloseButton: true,
+            confirmButtonColor: '#d63031',
+            focusConfirm: false,
+            confirmButtonText: 'Confirmar',
+            preConfirm: (excluir) => {
+                const password = excluir;
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                firebase.auth().onAuthStateChanged((user) => {
+                    if (user) {
+                        const email = user.email;
+                        db.collection("usuarios").where("email", "==", email).get().then(function (querySnapshot) {
+                            querySnapshot.forEach(function (doc) {
+                                doc.ref.delete()
+                            });
+                        });
+                        const credential = firebase.auth.EmailAuthProvider.credential(
+                            user.email,
+                            result.value
+                        );
+                        user.reauthenticateWithCredential(credential).then(() => {
+                            user.delete().then(() => {
+                                window.location.href = "index.html";
+                            }).catch((error) => {
+                                alert(error);
+                            });
+                        }).catch((error) => {
+                            alert(error);
+                        });
+                    }
+                });
+            }
+        });
+    }
+</script>
+<script>
+    let db = firebase.firestore();
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            const email = user.email;
+            db.collection("usuarios").where("email", "==", email).get().then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    $("#nome").val(doc.data().nome);
+                    $("#telefone").val(doc.data().telefone);
+                    $("#CEP").val(doc.data().cep);
+                    $("#rua").val(doc.data().rua);
+                    $("#numero").val(doc.data().numero);
+                    $("#bairro").val(doc.data().bairro);
+                    $("#cidade").val(doc.data().cidade);
+                });
+            });
+        }
+    });
+</script>
+<script>
+    function editarPerfil() {
+        let cnome = document.getElementById("nome").value;
+        let ctelefone = document.getElementById("telefone").value;
+        let ccep = document.getElementById("CEP").value;
+        let crua = document.getElementById("rua").value;
+        let cnumero = document.getElementById("numero").value;
+        let cbairro = document.getElementById("bairro").value;
+        let ccidade = document.getElementById("cidade").value;
+        let db = firebase.firestore();
+        firebase.auth().onAuthStateChanged((user) => {
+            if (user) {
+                const email = user.email;
+                db.collection("usuarios").where("email", "==", email).get().then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        var dados = db.collection("usuarios").doc(doc.id);
+                        if ((cnome != '') && (cemail != '') && (ctelefone != '') && (ccep != '') && (crua != '') && (cnumero != '') && (cbairro != '') && (ccidade != '')) {
+                            return dados.update({
+                                nome: cnome,
+                                telefone: ctelefone,
+                                cep: ccep,
+                                rua: crua,
+                                numero: cnumero,
+                                bairro: cbairro,
+                                cidade: ccidade,
+                            }).then(() => {
+                                window.location.href = "perfil.html";
+                            });
+                        } else {
+                            Swal.fire(
+                                'Atenção',
+                                'Campos obrigatórios não preenchidos',
+                                'alert'
+                            )
+                        }
+                    });
+
+                });
+
+            }
+        });
+    }
+</script>
+<script>
+    function mudarSenha() {
+        Swal.fire({
+            title: 'Redefinir senha',
+            html: 'Insira sua nova senha.',
+            icon: 'info',
+            input: 'password',
+            showCloseButton: true,
+            confirmButtonColor: '#2ecc71',
+            focusConfirm: false,
+            confirmButtonText: 'Confirmar',
+            preConfirm: (senhanova) => {
+                const password = senhanova;
+            },
+        }).then((result) => {
+            if (result.isConfirmed) {
+                firebase.auth().onAuthStateChanged((user) => {
+                    user.updatePassword(result.value).then(() => {
+                        window.location.href = "index.html";
+                    }).catch((error) => {
+                        alert(error);
+                    });
+                });
+            }
+        });
+    }
+</script>
+
+</html>
