@@ -1,5 +1,5 @@
+var db = firebase.firestore();
 function inserir() {
-    let db = firebase.firestore();
     let cnome = document.getElementById("nome").value;
     let cemail = document.getElementById("email").value;
     let email = cemail.toLowerCase();
@@ -28,7 +28,6 @@ function inserir() {
     }
 }
 function addFuncionario(cemail, cnome, cmatricula, ctipo, cunidade, cstatus) {
-    let db = firebase.firestore();
     db.collection("funcionarios").add({
         nome: cnome,
         email: cemail,
@@ -52,7 +51,6 @@ function addFuncionario(cemail, cnome, cmatricula, ctipo, cunidade, cstatus) {
     });
 }
 function addGerente(cunidade, cemail) {
-    let db = firebase.firestore();
     db.collection("lojas").where("unidade", "==", cunidade).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             var cgerente = (doc.data().gerente);
@@ -72,7 +70,6 @@ var url_string = window.location.href;
 var url = new URL(url_string);
 var email = url.searchParams.get("email");
 function editarPerfil() {
-    let db = firebase.firestore();
     let cnome = document.getElementById("nome").value;
     var cemail = document.getElementById("email").value;
     let email = cemail.toLowerCase();
@@ -169,3 +166,46 @@ function solicitarEdicao() {
         }
     });
 }
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        const email = user.email;
+        db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
+            if (querySnapshot.empty) {
+                window.location.href = "../index.html";
+            } else {
+                querySnapshot.forEach((doc) => {
+                    $("#unidade").val(doc.data().unidade);
+                    let tipo = (doc.data().tipo);
+                    if (tipo != "Gerente"){
+                        window.location.href = "indexFuncionario.html";
+                    }
+                });
+            }
+        });
+    }
+    else {
+        window.location.href = "loginFuncionario.html";
+    }
+});
+
+firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+        var email = user.email;
+        db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
+            if (querySnapshot.empty) {
+                window.location.href = "../index.html";
+            } else {
+                querySnapshot.forEach((doc) => {
+                    $("#nome").val(doc.data().nome);
+                    $("#matricula").val(doc.data().matricula);
+                    $("#tipo").val(doc.data().tipo);
+                    $("#unidadeForm").val(doc.data().unidade);
+                    var cnome = (doc.data().nome);
+                    var cemailgestor = (doc.data().gerente);
+                });
+            }
+        });
+    } else {
+        window.location.href = "loginFuncionario.html";
+    }
+});

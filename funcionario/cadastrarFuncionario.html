@@ -26,7 +26,6 @@
             <input class="form" type="text" id="nome" name="nome" required>
             <label class="required" for="email" id="emaillabel">E-mail:</label>
             <input class="form" type="email" id="email" name="email" required>
-            <p id="erroemail">Campo preenchido incorretamente</p>
             <label class="required" for="matricula">Matrícula:</label>
             <input class="form" type="text" id="matricula" name="matricula" required>
             <label class="required" for="tipo">Tipo:</label>
@@ -58,28 +57,4 @@
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    let db = firebase.firestore();
-    firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-            const email = user.email;
-            db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
-                if (querySnapshot.empty) {
-                    window.location.href = "../index.html";
-                } else {
-                    querySnapshot.forEach((doc) => {
-                    $("#unidade").val(doc.data().unidade);
-                    let tipo = (doc.data().tipo);
-                    validaAcesso(tipo);
-                    });
-                }
-            });
-        }
-        else {
-            window.location.href = "loginFuncionario.html";
-        }
-    });
-
-</script>
-
 </html>

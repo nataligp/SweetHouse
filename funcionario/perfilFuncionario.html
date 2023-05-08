@@ -37,33 +37,7 @@
     </div>
 </body>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script src="sweetalert2.all.min.js"></script>
 <script src="../js/mascara.js"></script>
 <script src="../js/cep.js"></script>
-<script>
-    let db = firebase.firestore();
-    firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-            var email = user.email;
-            db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
-                if (querySnapshot.empty) {
-                    window.location.href = "../index.html";
-                } else {
-                    querySnapshot.forEach((doc) => {
-                        $("#nome").val(doc.data().nome);
-                        $("#matricula").val(doc.data().matricula);
-                        $("#tipo").val(doc.data().tipo);
-                        $("#unidadeForm").val(doc.data().unidade);
-                        var cnome = (doc.data().nome);
-                        var cemailgestor = (doc.data().gerente);
-                    });
-                }
-            });
-        } else {
-            window.location.href = "loginFuncionario.html";
-        }
-    });
-
-</script>
-
+<script src="../js/funcionario.js"></script>
 </html>

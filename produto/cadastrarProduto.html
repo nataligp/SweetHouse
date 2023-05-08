@@ -9,7 +9,6 @@
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
     <script src="../js/firebase.js"></script>
-    <script src="../js/mascara.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
@@ -36,8 +35,9 @@
                 <select name="categoria" id="categoria">
                     <option id="option" value="">Selecione</option>
                     <option value="Bolo">Bolo</option>
-                    <option value="Sobremesa">Sobremesa</option>
-                    <option value="Doces diversos">Doces diversos</option>
+                    <option value="Doces">Doces</option>
+                    <option value="Tortas">Tortas</option>
+                    <option value="Sobremesas">Sobremesas</option>
                 </select>
             </div>
             <label id="inputImg">
@@ -54,81 +54,10 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="../js/jquery.maskMoney.min.js" type="text/javascript"></script>
+<script src="../js/maskmoney.js"></script>
+<script src="../js/produto.js"></script>
 <script>
-    function readImage() {
-        if (this.files && this.files[0]) {
-            var file = new FileReader();
-            file.onload = function (e) {
-                document.getElementById("preview").src = e.target.result;
-            };
-            file.readAsDataURL(this.files[0]);
-        }
-    }
-
     document.getElementById("imgprod").addEventListener("change", readImage, false);
-
-    firebase.auth().onAuthStateChanged((user) => {
-        if (!user) {
-            window.location.href = "../funcionario/loginFuncionario.html";
-        }
-    });
-
-    function inserirProduto() {
-        let db = firebase.firestore();
-        let cnome = document.getElementById("nome").value;
-        let csku = document.getElementById("sku").value;
-        let cpreco = document.getElementById("preco").value;
-        let cdescricao = document.getElementById("descricao").value;
-        let ccategoria = document.getElementById("categoria").value;
-        let cstatus = "DISPONÍVEL"
-        if ((cnome != '') && (csku != '') && (cpreco != '') && (cdescricao != '') && (ccategoria != '') && (ccategoria != "Selecione")) {
-            db.collection("produtos").where("sku", "==", csku).get().then((querySnapshot) => {
-                if (querySnapshot.empty) {
-                    addProduto(cnome, csku, cpreco, cdescricao, ccategoria, cstatus);
-                } else {
-                    Swal.fire(
-                        'Atenção',
-                        'O SKU já está cadastrado',
-                        'error'
-                    )
-                }
-            });
-        } else {
-            Swal.fire(
-                'Atenção',
-                'Campos obrigatórios não preenchidos ou preenchidos incorretamente',
-                'error'
-            )
-        }
-    }
-    function addProduto(cnome, csku, cpreco, cdescricao, ccategoria, cstatus) {
-        var file = document.getElementById("imgprod").files[0];
-        let db = firebase.firestore();
-        let storage = firebase.storage();
-        let path = ccategoria + "/";
-        let name = csku;
-        let imgRef = storage.ref().child(path + name + ".jpg")
-        imgRef.put(file);
-        db.collection("produtos").add({
-            nome: cnome,
-            sku: csku,
-            preco: cpreco,
-            descricao: cdescricao,
-            categoria: ccategoria,
-            status: cstatus,
-        });
-        Swal.fire({
-            title: 'Produto cadastrado!',
-            icon: 'success',
-            confirmButtonColor: '#2ecc71',
-            focusConfirm: false,
-            confirmButtonText: 'Confirmar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                location.reload();
-            }
-        });
-    }
 </script>
 
 </html>
