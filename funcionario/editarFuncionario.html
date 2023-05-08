@@ -13,6 +13,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
     <script src="../js/firebase.js"></script>
+    <script src="../js/funcionario.js"></script>
     <title>Perfil</title>
 </head>
 
@@ -59,10 +60,31 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="sweetalert2.all.min.js"></script>
 <script>
+    let db = firebase.firestore();
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            const email = user.email;
+            db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
+                if (querySnapshot.empty) {
+                    window.location.href = "../index.html";
+                } else {
+                    querySnapshot.forEach((doc) => {
+                        $("#unidade").val(doc.data().unidade);
+                        let tipo = (doc.data().tipo);
+                        if (tipo != "Gerente"){
+                            window.location.href = "indexFuncionario.html";
+                        }
+                    });
+                }
+            });
+        }
+        else {
+            window.location.href = "loginFuncionario.html";
+        }
+    });
     var url_string = window.location.href;
     var url = new URL(url_string);
     var email = url.searchParams.get("email");
-    var db = firebase.firestore();
     db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             document.getElementById("nome").value = doc.data().nome;
@@ -72,51 +94,6 @@
             document.getElementById("unidadeForm").value = doc.data().unidade;
         });
     })
-</script>
-<script>
-    var url_string = window.location.href;
-    var url = new URL(url_string);
-    var email = url.searchParams.get("email");
-    function editarPerfil() {
-        let db = firebase.firestore();
-        let cnome = document.getElementById("nome").value;
-        var cemail = document.getElementById("email").value;
-        let email = cemail.toLowerCase();
-        let cmatricula = document.getElementById("matricula").value;
-        let ctipo = document.getElementById("tipo").value;
-        let cunidade = document.getElementById("unidadeForm").value;
-        db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                var dados = db.collection("funcionarios").doc(doc.id);
-                return dados.update({
-                    nome: cnome,
-                    email: cemail,
-                    matricula: cmatricula,
-                    tipo: ctipo,
-                    unidade: cunidade,
-                }).then(() => {
-                    window.location.href = "equipe.html";
-                });
-            });
-        });
-    }
-</script>
-<script>
-    function bloquearUser(){
-        var url_string = window.location.href;
-    var url = new URL(url_string);
-    var email = url.searchParams.get("email");
-    db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                var dados = db.collection("funcionarios").doc(doc.id);
-                return dados.update({
-                    status: "BLOQUEADO",
-                }).then(() => {
-                    window.location.href = "equipe.html";
-                });
-            });
-        });
-    }
 </script>
 
 </html>

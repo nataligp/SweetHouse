@@ -1,11 +1,12 @@
 const firebaseConfig = {
-  apiKey: "AIzaSyBMb0DPpdt9o0ifqQU9cCkwFuXECbrF8Vk",
-  authDomain: "sweethouse-9ad78.firebaseapp.com",
-  projectId: "sweethouse-9ad78",
-  storageBucket: "sweethouse-9ad78.appspot.com",
-  messagingSenderId: "102544274088",
-  appId: "1:102544274088:web:a82d50d33c30138bea089d"
-  };
-  
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
+  apiKey: "AIzaSyDBEevuyJL_WMsPfRJlYCDO-rdPneVuFhE",
+  authDomain: "sweethouse-f68fb.firebaseapp.com",
+  projectId: "sweethouse-f68fb",
+  storageBucket: "sweethouse-f68fb.appspot.com",
+  messagingSenderId: "810436492796",
+  appId: "1:810436492796:web:fdc6c76f22f1809aed0679",
+  measurementId: "G-1Q3BQL2KHN"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);

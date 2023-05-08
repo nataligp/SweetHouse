@@ -13,6 +13,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
         integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="../js/funcionario.js"></script>
     <title>Cadastro funcionário</title>
 </head>
 
@@ -37,7 +38,7 @@
                 </select>
             </div>
             <div class="unidadeForm">
-                <label class="required" for="unidade">Unidade:</label>
+                <label class="required" for="unidadeForm">Unidade:</label>
                 <select name="unidadeForm" id="unidadeForm">
                     <option id="option" value="">Selecione</option>
                     <option value="Grajaú">Grajaú</option>
@@ -58,82 +59,27 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+    let db = firebase.firestore();
     firebase.auth().onAuthStateChanged((user) => {
-        if (!user) {
+        if (user) {
+            const email = user.email;
+            db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
+                if (querySnapshot.empty) {
+                    window.location.href = "../index.html";
+                } else {
+                    querySnapshot.forEach((doc) => {
+                    $("#unidade").val(doc.data().unidade);
+                    let tipo = (doc.data().tipo);
+                    validaAcesso(tipo);
+                    });
+                }
+            });
+        }
+        else {
             window.location.href = "loginFuncionario.html";
         }
     });
 
-
-    function inserir() {
-        let db = firebase.firestore();
-        let cnome = document.getElementById("nome").value;
-        let cemail = document.getElementById("email").value;
-        let email = cemail.toLowerCase();
-        let cmatricula = document.getElementById("matricula").value;
-        let ctipo = document.getElementById("tipo").value;
-        let cunidade = document.getElementById("unidadeForm").value;
-        let cstatus = "INATIVO";
-        if ((cnome != '') && (cemail != '') && (cmatricula != '') && (ctipo != '') && (cunidade != '') && (cunidade != "Selecione") && (ctipo != "Selecione")) {
-            db.collection("funcionarios").where("email", "==", cemail).get().then((querySnapshot) => {
-                if (querySnapshot.empty) {
-                    addFuncionario(cemail, cnome, cmatricula, ctipo, cunidade, cstatus);
-                } else {
-                    Swal.fire(
-                        'Atenção',
-                        'O e-mail já está cadastrado',
-                        'error'
-                    )
-                }
-            });
-        } else {
-            Swal.fire(
-                'Atenção',
-                'Campos obrigatórios não preenchidos ou preenchidos incorretamente',
-                'error'
-            )
-        }
-    }
-    function addFuncionario(cemail, cnome, cmatricula, ctipo, cunidade, cstatus) {
-        let db = firebase.firestore();
-        db.collection("funcionarios").add({
-            nome: cnome,
-            email: cemail,
-            matricula: cmatricula,
-            tipo: ctipo,
-            unidade: cunidade,
-            status: cstatus,
-        });
-        addGerente(cunidade, cemail);
-        Swal.fire({
-            title: 'Funcionário cadastrado!',
-            html: 'O funcionário foi cadastrado com sucesso.',
-            icon: 'success',
-            confirmButtonColor: '#2ecc71',
-            focusConfirm: false,
-            confirmButtonText: 'Confirmar'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                location.reload();
-            }
-        });
-    }
-    function addGerente(cunidade, cemail) {
-        let db = firebase.firestore();
-        db.collection("lojas").where("unidade", "==", cunidade).get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                var cgerente = (doc.data().gerente);
-                db.collection("funcionarios").where("email", "==", cemail).get().then((querySnapshot) => {
-                    querySnapshot.forEach((doc) => {
-                        var dados = db.collection("funcionarios").doc(doc.id);
-                        return dados.update({
-                            gerente: cgerente,
-                        });
-                    });
-                });
-            });
-        });
-    }
 </script>
 
 </html>

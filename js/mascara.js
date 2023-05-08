@@ -3,3 +3,11 @@ $(document).ready(function(){
     $('#telefone').mask('(99) 99999-9999')
     $('#telefonefixo').mask('(99) 9999-9999')
 })
+$(document).ready(function () {
+    $('#preco').maskMoney({
+        prefix: 'R$ ',
+        allowNegative: true,
+        thousands: '.', decimal: ',',
+        affixesStay: true
+    });
+})

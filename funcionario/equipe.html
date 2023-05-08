@@ -20,8 +20,8 @@
 <body class="body">
     <header class="header">
         <div class="logos">
-            <img src="../img/bolo.png" id="imgnavbolo"></a>
-            <img src="../img/LogoManager.png" id="imgnavlogo"></a>
+            <img src="../img/bolo.png" id="imgnavbolo">
+            <img src="../img/LogoManager.png" id="imgnavlogo">
         </div>
         <div class="funcionario">
             <div class="navheaderFuncionario">
@@ -70,13 +70,20 @@
             if (user) {
                 const email = user.email;
                 db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
+                    if(querySnapshot.empty){
+                        window.location.href = "../index.html";
+                    }else{
                     querySnapshot.forEach((doc) => {
                         $("#unidade").val(doc.data().unidade);
                         let unidade = (doc.data().unidade);
                         visualizarEquipe(unidade);
                     });
+                }
                 });
                 
+            }
+            else{
+                window.location.href = "loginFuncionario.html";
             }
         });
     </script>

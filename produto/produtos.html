@@ -14,7 +14,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
     <script src="../js/firebase.js"></script>
-    <title>Sweet House - Funcionário</title>
+    <title>Produtos</title>
 </head>
 
 <body class="body">
@@ -38,47 +38,45 @@
             </div>
         </div>
     </header>
-    <div class="menuFuncionario" id="menuFun">
-        <a href="../produto/produtos.html">Produtos</a>
-        <hr>
-        <a href="encomendas.html">Encomendas</a>
-        <hr>
-        <a href="conversas.html">Conversas</a>
-        <div id="private">
-            <hr>
-            <a href="equipe.html">Equipe</a>
-            <hr>
-            <a href="loja.html">Dados da loja</a>
-            <hr>
-            <a href="estatisticas.html">Estatísticas</a>
-        </div>
-        <hr>
-        <a href="suporte.html">Suporte técnico</a>
-    </div>
     <div class="main">
-        <img src="../img/bolo.png">
+        <div class="topo">
+            <h1>Produtos Sweet House</h1>
+        </div>
+        <a href="cadastrarProduto.html" id="btnAdd">Adicionar produto</a>
+        <div class="equipe">
+            <table>
+                <thead>
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Valor</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Disponibilidade</th>
+                    </tr>
+                </thead>
+                <tbody id="dados">
+
+                </tbody>
+            </table>
+            </table>
+
+        </div>
     </div>
     <footer class="footer">
     </footer>
+
     <script>
-        document.getElementById("menuFun").style.display = "none";
         let db = firebase.firestore();
         firebase.auth().onAuthStateChanged((user) => {
             if (user) {
                 const email = user.email;
                 db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
-                    if (querySnapshot.empty) {
-                        window.location.href = "../index.html";
-                    } else {
-                        querySnapshot.forEach((doc) => {
-                            $("#unidade").val(doc.data().unidade);
-                            let tipo = (doc.data().tipo);
-                            validaAcesso(tipo);
-                        });
-                    }
+                    querySnapshot.forEach((doc) => {
+                        $("#unidade").val(doc.data().unidade);
+                        let unidade = (doc.data().unidade);
+                        visualizarProdutos(unidade);
+                    });
                 });
-            } else {
-                window.location.href = "loginFuncionario.html";
+                
             }
         });
     </script>
@@ -91,15 +89,19 @@
         }
     </script>
     <script>
-        function validaAcesso(tipo) {
-            if (tipo == "Gerente") {
-                document.getElementById("menuFun").style.display = "flex";
-                document.getElementById("private").style.display = "flex";
-            } else {
-                document.getElementById("menuFun").style.display = "flex";
-                document.getElementById("private").style.display = "none";
+        function visualizarProdutos(unidade){
+                db.collection("produtos").get().then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        $("#dados").append("<tr>");
+                        $("#dados").append("<td scope='col'>" + doc.data().nome + "</td>");
+                        $("#dados").append("<td scope='col'>" + doc.data().preco + "</td>");
+                        $("#dados").append("<td scope='col'>" + doc.data().categoria + "</td>");
+                        $("#dados").append("<td scope='col'>" + doc.data().status + "</td>");
+                        $("#dados").append("<td scope='col' id='edit'><a href='editarProduto.html?sku=" + doc.data().sku + "'>Editar</a></td>");
+                        $("#dados").append("</tr>");
+                    });
+                });
             }
-        }
     </script>
 </body>
 

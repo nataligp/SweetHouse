@@ -1,0 +1,134 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/estilo.css">
+    <link rel="icon" href="../img/logocirculo.png">
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+    <script src="../js/firebase.js"></script>
+    <script src="../js/mascara.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
+        integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <title>Cadastro de produto</title>
+</head>
+
+<body class="body">
+    <div class="containerDados">
+        <a href="../funcionario/indexFuncionario.html"><img src="../img/bolo.png" height="100px" width="100px"></a>
+        <h1 style="margin: 20px 0px 0px 0px;">Produto</h1>
+        <form name="formLogin" class="formCad">
+            <label class="required" for="nome">Nome:</label>
+            <input class="form" type="text" id="nome" name="nome" required>
+            <label class="required" for="email" id="emaillabel">SKU:</label>
+            <input class="form" type="text" id="sku" name="sku" required>
+            <label class="required" for="preco">Preço:</label>
+            <input class="form" type="text" id="preco" name="preco" required>
+            <label class="required" for="descricao">Descrição:</label>
+            <input class="form" type="text" id="descricao" name="descricao" required>
+            <div class="categoria">
+                <label class="required" for="categoria">Categoria:</label>
+                <select name="categoria" id="categoria">
+                    <option id="option" value="">Selecione</option>
+                    <option value="Bolo">Bolo</option>
+                    <option value="Sobremesa">Sobremesa</option>
+                    <option value="Doces diversos">Doces diversos</option>
+                </select>
+            </div>
+            <label id="inputImg">
+                <span>Imagem:</span>
+                <img src="../img/importar.png" width="20px" height="20px">
+                <input type="file" class="input-file" accept="image/*" id="imgprod" name="imgprod">
+            </label>
+            <div id="img-container">
+                <img id="preview" src="">
+            </div>
+        </form>
+        <button class="buttonInput" onclick="inserirProduto()">Cadastrar</button>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="../js/jquery.maskMoney.min.js" type="text/javascript"></script>
+<script>
+    function readImage() {
+        if (this.files && this.files[0]) {
+            var file = new FileReader();
+            file.onload = function (e) {
+                document.getElementById("preview").src = e.target.result;
+            };
+            file.readAsDataURL(this.files[0]);
+        }
+    }
+
+    document.getElementById("imgprod").addEventListener("change", readImage, false);
+
+    firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+            window.location.href = "../funcionario/loginFuncionario.html";
+        }
+    });
+
+    function inserirProduto() {
+        let db = firebase.firestore();
+        let cnome = document.getElementById("nome").value;
+        let csku = document.getElementById("sku").value;
+        let cpreco = document.getElementById("preco").value;
+        let cdescricao = document.getElementById("descricao").value;
+        let ccategoria = document.getElementById("categoria").value;
+        let cstatus = "DISPONÍVEL"
+        if ((cnome != '') && (csku != '') && (cpreco != '') && (cdescricao != '') && (ccategoria != '') && (ccategoria != "Selecione")) {
+            db.collection("produtos").where("sku", "==", csku).get().then((querySnapshot) => {
+                if (querySnapshot.empty) {
+                    addProduto(cnome, csku, cpreco, cdescricao, ccategoria, cstatus);
+                } else {
+                    Swal.fire(
+                        'Atenção',
+                        'O SKU já está cadastrado',
+                        'error'
+                    )
+                }
+            });
+        } else {
+            Swal.fire(
+                'Atenção',
+                'Campos obrigatórios não preenchidos ou preenchidos incorretamente',
+                'error'
+            )
+        }
+    }
+    function addProduto(cnome, csku, cpreco, cdescricao, ccategoria, cstatus) {
+        var file = document.getElementById("imgprod").files[0];
+        let db = firebase.firestore();
+        let storage = firebase.storage();
+        let path = ccategoria + "/";
+        let name = csku;
+        let imgRef = storage.ref().child(path + name + ".jpg")
+        imgRef.put(file);
+        db.collection("produtos").add({
+            nome: cnome,
+            sku: csku,
+            preco: cpreco,
+            descricao: cdescricao,
+            categoria: ccategoria,
+            status: cstatus,
+        });
+        Swal.fire({
+            title: 'Produto cadastrado!',
+            icon: 'success',
+            confirmButtonColor: '#2ecc71',
+            focusConfirm: false,
+            confirmButtonText: 'Confirmar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                location.reload();
+            }
+        });
+    }
+</script>
+
+</html>

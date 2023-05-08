@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Exemplo de recebimento de dados do jQuery</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      $(document).ready(function() {
+        $.ajax({
+          url: "https://jsonplaceholder.typicode.com/todos/1",
+          dataType: "json",
+          success: function(data) {
+            $("#resultado").html("Título: " + data.title);
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div id="resultado"></div>
+  </body>
+</html>
