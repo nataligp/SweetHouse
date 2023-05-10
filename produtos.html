@@ -51,7 +51,11 @@
     </header>
     <div class="main">
         <div class="topo">
-            <h1>Bolos</h1>
+            <input type="text" readonly id="categoria">
+        </div>
+        <div id="noproducts">
+            <img src="img/nocontent.png">
+            <h4>Não há produtos para exibir</h4>
         </div>
         <div class="produtos">
             <table class="detalhes">
@@ -63,34 +67,43 @@
     </div>
 </body>
 <script>
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var categoria = url.searchParams.get("categoria");
+    let db = firebase.firestore();
+    db.collection("produtos").where("categoria", "==", categoria).where("status", "==", "DISPONÍVEL").get().then((querySnapshot) => {
+        if (!querySnapshot.empty) {
+        querySnapshot.forEach((doc) => {
+            let sku = doc.data().sku;
+            const storageRef = firebase.storage().ref();
+            const imageRef = storageRef.child(categoria +"/" + sku + '.jpg');
+            imageRef.getDownloadURL().then(function (url) {
+                $("#info").append("<img id='imgprod' src =' " + url + "'>");
+                $("#info").append("<td scope='row' id='titulo'>" + (doc.data().nome) + "</td>");
+                $("#info").append("<td scope='row'>" + (doc.data().preco) + "</td>");
+                $("#info").append("<td scope='row' id='btn'><a href='detalhesProduto.html?sku=" + doc.data().sku + "&categoria="+ categoria +"'>Ver detalhes</a></td>");
+                $("#info").append("<tr id='line'>");
+            });
+        });
+    }else{
+        document.getElementById("noproducts").style.display = "flex";
+    }
+    });
     function LogOut() {
         firebase.auth().signOut().then(() => {
             window.location.href = "index.html";
         }).catch((error) => {
         });
     }
-    let db = firebase.firestore();
-    db.collection("produtos").where("categoria", "==", "Bolo").get().then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
-            let sku = doc.data().sku;
-            const storageRef = firebase.storage().ref();
-            const imageRef = storageRef.child("Bolo/" + sku + '.jpg');
-            imageRef.getDownloadURL().then(function (url) {
-                $("#info").append("<img id='imgprod' src =' " + url + "'>");
-                $("#info").append("<td scope='row' id='titulo'>" + (doc.data().nome) + "</td>");
-                $("#info").append("<td scope='row'>" + (doc.data().preco) + "</td>");
-                $("#info").append("<td scope='row' id='btn'><a href='detalhesProduto.html?sku=" + doc.data().sku + "'>Ver detalhes</a></td>");
-                $("#info").append("<tr id='line'>");
-            });
-        });
+    firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+            document.getElementById("header").style.display = "none";
+            document.getElementById("navheaderLogin").style.display = "flex";
+        } else {
+            document.getElementById("navheaderLogin").style.display = "none";
+            document.getElementById("header").style.display = "flex";
+        }
     });
-    function getImg(sku) {
-        const storageRef = firebase.storage().ref();
-        const imageRef = storageRef.child(sku + '.jpg');
-        imageRef.getDownloadURL().then(function (url) {
-            return url;
-        });
-    }
 </script>
 
 </html>

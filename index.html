@@ -37,8 +37,8 @@
         </li>
       </div>
       <li class="nav-item">
-        <button class="nav-link" id="logOut" onclick="LogOut()"><img src="img/logout.png" height="25px"
-          width="25px" style="margin-top: 10px;">Sair</button>
+        <button class="nav-link" id="logOut" onclick="LogOut()"><img src="img/logout.png" height="25px" width="25px"
+            style="margin-top: 10px;">Sair</button>
       </li>
     </div>
   </header>
@@ -47,16 +47,16 @@
     <div class="card-produtos">
       <div class="card" style="width: 18rem;">
         <div class="card-body">
-          <a href="pbolos.html">
+          <a href="produtos.html?categoria=Bolo">
             <h5 class="card-title">Bolos</h5>
             <img src="img/bolo.jpg" class="card-img-top" alt="...">
-            <a href="bolos.html" class="btnProduto">Ver todos</a>
+            <a href="produtos.html?categoria=Bolo" class="btnProduto">Ver todos</a>
           </a>
         </div>
       </div>
       <div class="card" style="width: 18rem;">
         <div class="card-body">
-          <a href="doces.html">
+          <a href='produtos.html?categoria=Doces'>
             <h5 class="card-title">Doces</h5>
             <img src="img/doces.png" class="card-img-top" alt="...">
             <a href="#" class="btnProduto">Ver todos</a>
@@ -65,7 +65,7 @@
       </div>
       <div class="card" style="width: 18rem;">
         <div class="card-body">
-          <a href="tortas.html">
+          <a href='produtos.html?categoria=Tortas'>
             <h5 class="card-title">Tortas</h5>
             <img src="img/tortas.jpg" class="card-img-top" alt="...">
             <a href="tortas.html" class="btnProduto">Ver todos</a>
@@ -74,7 +74,7 @@
       </div>
       <div class="card" style="width: 18rem;">
         <div class="card-body">
-          <a href="sobremesas.html">
+          <a href='produtos.html?categoria=Sobremesas'>
             <h5 class="card-title">Sobremesas</h5>
             <img src="img/sobremesas.jpg" class="card-img-top" alt="...">
             <a href="#" class="btnProduto">Ver todos</a>
@@ -120,8 +120,6 @@
       }).catch((error) => {
       });
     }
-  </script>
-  <script>
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         document.getElementById("header").style.display = "none";

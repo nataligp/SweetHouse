@@ -73,11 +73,12 @@
     var url_string = window.location.href;
     var url = new URL(url_string);
     var sku = url.searchParams.get("sku");
-    db.collection("produtos").where("sku", "==", sku).get().then((querySnapshot) => {
+    var categoria = url.searchParams.get("categoria");
+    db.collection("produtos").where("sku", "==", sku).limit(1).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             let sku = doc.data().sku;
             const storageRef = firebase.storage().ref();
-            const imageRef = storageRef.child("Bolo/" + sku + '.jpg');
+            const imageRef = storageRef.child(categoria + "/" + sku + '.jpg');
             imageRef.getDownloadURL().then(function (url) {
             $("#info").append("<img id='imgproddet' src =' " + url + "'>");
             $("#info").append("<td scope='row' id='titulo'>" + (doc.data().nome) + "</td>");

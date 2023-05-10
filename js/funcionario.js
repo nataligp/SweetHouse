@@ -1,4 +1,5 @@
 var db = firebase.firestore();
+
 function inserir() {
     let cnome = document.getElementById("nome").value;
     let cemail = document.getElementById("email").value;
@@ -35,19 +36,21 @@ function addFuncionario(cemail, cnome, cmatricula, ctipo, cunidade, cstatus) {
         tipo: ctipo,
         unidade: cunidade,
         status: cstatus,
-    });
-    addGerente(cunidade, cemail);
-    Swal.fire({
-        title: 'Funcionário cadastrado!',
-        html: 'O funcionário foi cadastrado com sucesso.',
-        icon: 'success',
-        confirmButtonColor: '#2ecc71',
-        focusConfirm: false,
-        confirmButtonText: 'Confirmar'
-    }).then((result) => {
-        if (result.isConfirmed) {
-            location.reload();
-        }
+    }).then(function() {
+        addGerente(cunidade, cemail).then(() => {
+            Swal.fire({
+                title: 'Funcionário cadastrado!',
+                html: 'O funcionário foi cadastrado com sucesso.',
+                icon: 'success',
+                confirmButtonColor: '#2ecc71',
+                focusConfirm: false,
+                confirmButtonText: 'Confirmar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    location.reload();
+                }
+            });
+        });
     });
 }
 function addGerente(cunidade, cemail) {
@@ -174,9 +177,13 @@ firebase.auth().onAuthStateChanged((user) => {
                 window.location.href = "../index.html";
             } else {
                 querySnapshot.forEach((doc) => {
+                    $("#nome").val(doc.data().nome);
+                    $("#matricula").val(doc.data().matricula);
+                    $("#tipo").val(doc.data().tipo);
+                    $("#unidadeForm").val(doc.data().unidade);
                     $("#unidade").val(doc.data().unidade);
-                    let tipo = (doc.data().tipo);
-                    if (tipo != "Gerente"){
+                    var tipo = (doc.data().tipo);
+                    if (tipo != "Gerente") {
                         window.location.href = "indexFuncionario.html";
                     }
                 });
@@ -184,28 +191,6 @@ firebase.auth().onAuthStateChanged((user) => {
         });
     }
     else {
-        window.location.href = "loginFuncionario.html";
-    }
-});
-
-firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-        var email = user.email;
-        db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
-            if (querySnapshot.empty) {
-                window.location.href = "../index.html";
-            } else {
-                querySnapshot.forEach((doc) => {
-                    $("#nome").val(doc.data().nome);
-                    $("#matricula").val(doc.data().matricula);
-                    $("#tipo").val(doc.data().tipo);
-                    $("#unidadeForm").val(doc.data().unidade);
-                    var cnome = (doc.data().nome);
-                    var cemailgestor = (doc.data().gerente);
-                });
-            }
-        });
-    } else {
         window.location.href = "loginFuncionario.html";
     }
 });

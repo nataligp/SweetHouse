@@ -434,7 +434,7 @@ select:focus {
     align-self: end;
 }
 
-.equipe {
+.tabelas {
     align-self: center;
     margin-top: 40px;
 }
@@ -514,4 +514,16 @@ input[type="file"] {
 
 #btn a {
     color: #FFF;
+}
+#noproducts{
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 40px;
+    font-family: "Calibri";
+}
+#noproducts img{
+    height: 100px;
+    width: 100px;
+    margin-bottom: 20px;
 }
