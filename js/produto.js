@@ -252,13 +252,6 @@ function inativarProduto() {
     });
 }
 
-function LogOut() {
-    firebase.auth().signOut().then(() => {
-        window.location.href = "loginFuncionario.html";
-    }).catch((error) => {
-        console.log(error)
-    });
-}
 
 //Visualizar lista de produtos automaticamente
 

@@ -23,7 +23,7 @@
     <header class="header">
         <div class="logos">
             <img src="img/bolo.png" id="imgnavbolo"></a>
-            <img src="img/logo.png" id="imgnavlogo"></a>
+            <a href="index.html"><img src="img/logo.png" id="imgnavlogo"></a>
         </div>
         <div class="navheader" id="header">
             <li class="nav-item">
@@ -52,37 +52,84 @@
     </header>
     <div class="main">
         <div class="topo">
-            <h1>Bolos</h1>
+            <h1>Encomenda</h1>
         </div>
-        <div class="produtos">
-            <table class="detalhes">
-                <tbody id="info">
+        <div class="encomenda">
+            <p>Selecione uma loja para atender sua encomenda:</p>
+            <div class="lojas">
 
-                </tbody>
-            </table>
+            </div>
+            <img src="img/carregando.gif" id="carregando">
+            <p>Você deseja retirar sua encomenda na loja ou receber na sua casa?</p>
+            <div class="opcoes">
+                <input type="radio" value="RETIRAR" name="opcent" id="opcent">
+                <label>Retirar na loja</label>
+                </br>
+                </br>
+                <input type="radio" value="ENTREGA" name="opcent" id="opcent">
+                <label>Receber na minha casa</label>
+            </div>
+            <div class="opcoes">
+                <p>Selecione uma data para retirada/entrega:</p>
+                <input type="date" id="data">
+            </div>
+            <div class="opcoes">
+                <p>Deseja adicionar alguma observação especial para o seu pedido?</p>
+                <textarea name="obs" id="obs" cols="70" rows="5"></textarea>
+            </div>
         </div>
     </div>
 </body>
 <script>
-    let db = firebase.firestore();
+    const dataAtual = new Date()
+    const inputDate = document.querySelector('#data');
+    dataAtual.setDate(dataAtual.getDate() + 7);
+    let dataFormatada = dataAtual.toISOString().split('T')[0];
+    inputDate.min = dataFormatada;
+
+    let endereco = "";
+    let newEndereco = "";
     var url_string = window.location.href;
     var url = new URL(url_string);
-    var sku = url.searchParams.get("sku");
     var categoria = url.searchParams.get("categoria");
-    db.collection("produtos").where("sku", "==", sku).limit(1).get().then((querySnapshot) => {
+    var sku = url.searchParams.get("sku");
+    let db = firebase.firestore();
+    db.collection("produtos").where("sku", "==", sku).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-            let sku = doc.data().sku;
-            const storageRef = firebase.storage().ref();
-            const imageRef = storageRef.child(categoria + "/" + sku + '.jpg');
-            imageRef.getDownloadURL().then(function (url) {
-            $("#info").append("<img id='imgproddet' src =' " + url + "'>");
-            $("#info").append("<td scope='row' id='titulo'>" + (doc.data().nome) + "</td>");
-            $("#info").append("<td scope='row'>" + (doc.data().preco) + "</td>");
-            $("#info").append("<td scope='row'>" + (doc.data().descricao) + "</td>");
-            $("#info").append("<td scope='row' id='btn'><a href='encomendarProduto.html?sku=" + doc.data().sku + "&categoria="+ categoria +"'>Encomendar</a></td>");
-            });
+            let lojas = doc.data().unidade;
+            let size = lojas.length;
+            const lojasdiv = document.querySelector(".lojas");
+            for (I = 0; I < size; I++) {
+                const loja = lojas[I];
+                db.collection("lojas").where("unidade", "==", loja).get().then((querySnapshot) => {
+                    querySnapshot.forEach((doc) => {
+                        rua = doc.data().rua;
+                        numero = doc.data().numero;
+                        cep = doc.data().cep;
+                        let endereco = rua + ", " + numero + ", " + cep;
+                    });
+                    newEndereco = endereco;
+                });
+                const div = document.createElement("div");
+                div.setAttribute("id", "loja")
+                const radio = document.createElement("input");
+                const label = document.createElement("label");
+                radio.setAttribute("type", "radio");
+                radio.setAttribute("name", "lojas");
+                radio.setAttribute("value", loja);
+                radio.setAttribute("id", "loja");
+                label.setAttribute("for", loja);
+                label.textContent = loja + ", " + newEndereco;
+                document.getElementById("carregando").style.display = "none";
+                div.appendChild(radio);
+                div.appendChild(label);
+                lojasdiv.appendChild(div);
+            }
         });
-    })
+    });
+
+
+
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
             document.getElementById("header").style.display = "none";
@@ -93,4 +140,5 @@
         }
     });
 </script>
+
 </html>

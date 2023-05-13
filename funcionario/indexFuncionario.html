@@ -14,6 +14,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
     <script src="../js/firebase.js"></script>
+    <script src="../js/logoutFuncionario.js"></script>
     <title>Sweet House - Funcionário</title>
 </head>
 
@@ -83,12 +84,6 @@
         });
     </script>
     <script>
-        function LogOut() {
-            firebase.auth().signOut().then(() => {
-                window.location.href = "loginFuncionario.html";
-            }).catch((error) => {
-            });
-        }
     </script>
     <script>
         function validaAcesso(tipo) {

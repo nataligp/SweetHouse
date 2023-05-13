@@ -15,6 +15,7 @@
         integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/firebase.js"></script>
+    <script src="js/logoutCliente.js"></script>
     <title>Sweet House</title>
 </head>
 
@@ -89,12 +90,7 @@
         document.getElementById("noproducts").style.display = "flex";
     }
     });
-    function LogOut() {
-        firebase.auth().signOut().then(() => {
-            window.location.href = "index.html";
-        }).catch((error) => {
-        });
-    }
+    
     firebase.auth().onAuthStateChanged((user) => {
         if (user) {
             document.getElementById("header").style.display = "none";

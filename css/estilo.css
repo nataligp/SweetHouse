@@ -63,7 +63,7 @@
 }
 
 .navheaderLogin {
-    display: flex;
+    display: none;
     flex-direction: column;
     list-style: none;
     align-items: flex-start;
@@ -526,4 +526,28 @@ input[type="file"] {
     height: 100px;
     width: 100px;
     margin-bottom: 20px;
+}
+.encomenda{
+    padding-left: 50px;
+}
+.encomenda p{
+    margin-top: 50px;
+    font-size: large;
+}
+
+#loja label{
+    margin-left: 10px;
+    margin-top: 25px;
+}
+.opcoes{
+    margin-top: 25px;
+}
+
+input[type="date"]{
+    height: fit-content;
+}
+#carregando{
+    margin-top: 25px;
+    height:30px;
+    width:30px;
 }
