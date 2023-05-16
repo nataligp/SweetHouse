@@ -16,6 +16,7 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="js/firebase.js"></script>
     <script src="js/logoutCliente.js"></script>
+    <script src="js/navSet.js"></script>
     <title>Sweet House</title>
 </head>
 
@@ -75,8 +76,11 @@
             </div>
             <div class="opcoes">
                 <p>Deseja adicionar alguma observação especial para o seu pedido?</p>
-                <textarea name="obs" id="obs" cols="70" rows="5"></textarea>
+                <textarea id="myTextArea" oninput="autoResize(this)" cols="70" maxlength="150"></textarea>
             </div>
+            <label for="cpf">Insira o seu CPF:</label>
+            <input type="text" id="cpf">
+            <button onclick="realizarEncomenda()">Avançar</button>
         </div>
     </div>
 </body>
@@ -87,18 +91,16 @@
     let dataFormatada = dataAtual.toISOString().split('T')[0];
     inputDate.min = dataFormatada;
 
-    let endereco = "";
-    let newEndereco = "";
+    //------------------------------------------------------------------------//
+
     var url_string = window.location.href;
     var url = new URL(url_string);
-    var categoria = url.searchParams.get("categoria");
     var sku = url.searchParams.get("sku");
     let db = firebase.firestore();
     db.collection("produtos").where("sku", "==", sku).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             let lojas = doc.data().unidade;
             let size = lojas.length;
-            const lojasdiv = document.querySelector(".lojas");
             for (I = 0; I < size; I++) {
                 const loja = lojas[I];
                 db.collection("lojas").where("unidade", "==", loja).get().then((querySnapshot) => {
@@ -106,39 +108,37 @@
                         rua = doc.data().rua;
                         numero = doc.data().numero;
                         cep = doc.data().cep;
-                        let endereco = rua + ", " + numero + ", " + cep;
+                        let endereco = rua + ", " + numero + " - " + cep;
+                        visualizarLoja(loja, endereco);
                     });
-                    newEndereco = endereco;
                 });
-                const div = document.createElement("div");
-                div.setAttribute("id", "loja")
-                const radio = document.createElement("input");
-                const label = document.createElement("label");
-                radio.setAttribute("type", "radio");
-                radio.setAttribute("name", "lojas");
-                radio.setAttribute("value", loja);
-                radio.setAttribute("id", "loja");
-                label.setAttribute("for", loja);
-                label.textContent = loja + ", " + newEndereco;
-                document.getElementById("carregando").style.display = "none";
-                div.appendChild(radio);
-                div.appendChild(label);
-                lojasdiv.appendChild(div);
             }
         });
     });
 
+    function visualizarLoja(loja, endereco) {
+        const lojasdiv = document.querySelector(".lojas");
+        const div = document.createElement("div");
+        div.setAttribute("id", "loja")
+        const radio = document.createElement("input");
+        const label = document.createElement("label");
+        radio.setAttribute("type", "radio");
+        radio.setAttribute("name", "lojas");
+        radio.setAttribute("value", loja);
+        radio.setAttribute("id", "loja");
+        label.setAttribute("for", loja);
+        label.textContent = loja + " (" + endereco + ")";
+        document.getElementById("carregando").style.display = "none";
+        div.appendChild(radio);
+        div.appendChild(label);
+        lojasdiv.appendChild(div);
+    }
 
+    function autoResize(textarea) {
+        textarea.style.height = 'auto'; // Redefine a altura para permitir que o textarea se adapte ao novo conteúdo
+        textarea.style.height = textarea.scrollHeight + 'px'; // Define a altura do textarea com base no conteúdo inserido
+    }
 
-    firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-            document.getElementById("header").style.display = "none";
-            document.getElementById("navheaderLogin").style.display = "flex";
-        } else {
-            document.getElementById("navheaderLogin").style.display = "none";
-            document.getElementById("header").style.display = "flex";
-        }
-    });
 </script>
 
 </html>

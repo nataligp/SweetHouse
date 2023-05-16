@@ -536,7 +536,7 @@ input[type="file"] {
 }
 
 #loja label{
-    margin-left: 10px;
+    margin-left: 5px;
     margin-top: 25px;
 }
 .opcoes{
@@ -545,9 +545,32 @@ input[type="file"] {
 
 input[type="date"]{
     height: fit-content;
+    border: none;
+    border-bottom: solid 0.5px #d63031;
+    padding: 5px;
 }
 #carregando{
     margin-top: 25px;
     height:30px;
     width:30px;
+}
+.loja-input:checked[type="radio"]{
+    background-color: #d63031 !important;
+}
+#myTextArea{
+    resize: vertical;
+    overflow: hidden; 
+    border: none;
+    border-bottom: solid 0.5px #d63031;
+    margin-bottom: 40px;
+}  
+.encomenda{
+    display: flex;
+    flex-direction: column;
+}
+.encomenda input[type="text"]{
+    border: none;
+    border-bottom: solid 0.5px #d63031;
+    height: fit-content;
+    margin-bottom: 50px;
 }
