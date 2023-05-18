@@ -17,6 +17,8 @@
     <script src="js/firebase.js"></script>
     <script src="js/logoutCliente.js"></script>
     <script src="js/navSet.js"></script>
+    <script src="js/mascara.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>Sweet House</title>
 </head>
 
@@ -56,14 +58,14 @@
             <h1>Encomenda</h1>
         </div>
         <div class="encomenda">
-            <p>Selecione uma loja para atender sua encomenda:</p>
+            <p class="required">Selecione uma loja para atender sua encomenda:</p>
             <div class="lojas">
 
             </div>
             <img src="img/carregando.gif" id="carregando">
-            <p>Você deseja retirar sua encomenda na loja ou receber na sua casa?</p>
+            <p class="required">Você deseja retirar sua encomenda na loja ou receber na sua casa?</p>
             <div class="opcoes">
-                <input type="radio" value="RETIRAR" name="opcent" id="opcent">
+                <input type="radio" value="RETIRAR" name="opcent" id="opcent" checked>
                 <label>Retirar na loja</label>
                 </br>
                 </br>
@@ -71,16 +73,16 @@
                 <label>Receber na minha casa</label>
             </div>
             <div class="opcoes">
-                <p>Selecione uma data para retirada/entrega:</p>
+                <p class="required">Selecione uma data para retirada/entrega:</p>
                 <input type="date" id="data">
             </div>
             <div class="opcoes">
                 <p>Deseja adicionar alguma observação especial para o seu pedido?</p>
-                <textarea id="myTextArea" oninput="autoResize(this)" cols="70" maxlength="150"></textarea>
+                <textarea id="obsenc" oninput="autoResize(this)" cols="70" maxlength="150"></textarea>
             </div>
-            <label for="cpf">Insira o seu CPF:</label>
+            <label for="cpf" class="required">Insira o seu CPF:</label>
             <input type="text" id="cpf">
-            <button onclick="realizarEncomenda()">Avançar</button>
+            <button onclick="realizarEncomenda()" class="buttonInput">Encomendar</button>
         </div>
     </div>
 </body>
@@ -91,12 +93,30 @@
     let dataFormatada = dataAtual.toISOString().split('T')[0];
     inputDate.min = dataFormatada;
 
-    //------------------------------------------------------------------------//
-
     var url_string = window.location.href;
     var url = new URL(url_string);
     var sku = url.searchParams.get("sku");
     let db = firebase.firestore();
+
+    var userc = ""
+    var emailc = ""
+    //------------------------------------------------------------------------//
+    firebase.auth().onAuthStateChanged((user) => {
+        userc = user;
+        if (!user) {
+            Swal.fire({
+                html: "Para prosseguir é necessário realizar login!",
+                alert: 'success',
+                confirmButtonColor: '#',
+                focusConfirm: true,
+                confirmButtonText: 'Login'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = "login.html?enc=" + sku + ""
+                }
+            });
+        }
+    });
     db.collection("produtos").where("sku", "==", sku).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             let lojas = doc.data().unidade;
@@ -125,8 +145,9 @@
         radio.setAttribute("type", "radio");
         radio.setAttribute("name", "lojas");
         radio.setAttribute("value", loja);
-        radio.setAttribute("id", "loja");
+        radio.setAttribute("id", "loj");
         label.setAttribute("for", loja);
+        label.setAttribute("id", "loja");
         label.textContent = loja + " (" + endereco + ")";
         document.getElementById("carregando").style.display = "none";
         div.appendChild(radio);
@@ -138,7 +159,46 @@
         textarea.style.height = 'auto'; // Redefine a altura para permitir que o textarea se adapte ao novo conteúdo
         textarea.style.height = textarea.scrollHeight + 'px'; // Define a altura do textarea com base no conteúdo inserido
     }
+    function realizarEncomenda() {
+        let loja = document.getElementById("loj").value
+        let tiporet = document.getElementById("opcent").value;
+        let dataret = document.getElementById("data").value;
+        let obs = document.getElementById("obsenc").value;
+        let cpf = document.getElementById("cpf").value;
+        emailc = userc.email;
+        let status = "Aguardando aprovação da loja"
+        if ((loja != "") && (tiporet != "") && (dataret != "") && (obs != "") && (cpf != "")) {
+            db.collection("encomendas").add({
+                loja: loja,
+                tiporet: tiporet,
+                dataret: dataret,
+                obs: obs,
+                cpf: cpf,
+                emailc: emailc,
+                produto: sku,
+                status: status
+            }).then(() => {
+                Swal.fire({
+                    title: 'Encomenda realizada!',
+                    icon: 'sucess',
+                    confirmButtonColor: '#2ecc71',
+                    focusConfirm: false,
+                    confirmButtonText: 'Confirmar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "encomendasUsuario.html";
+                    }
+                })
+            })
+        } else {
+            Swal.fire(
+                'Atenção',
+                'Campos obrigatórios não preenchidos',
+                'alert'
+            )
+        }
 
+    }
 </script>
 
 </html>

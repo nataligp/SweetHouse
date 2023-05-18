@@ -116,5 +116,14 @@
     </div>
   </footer>
 </body>
+<script>
+  var url_string = window.location.href;
+  var url = new URL(url_string);
+  var sku = url.searchParams.get("enc");
+
+  if (sku != null) {
+    window.location.href = "encomendarProduto.html?sku=" + sku + "";
+  }
+</script>
 
 </html>

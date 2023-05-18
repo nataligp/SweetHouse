@@ -557,7 +557,7 @@ input[type="date"]{
 .loja-input:checked[type="radio"]{
     background-color: #d63031 !important;
 }
-#myTextArea{
+#obsenc{
     resize: vertical;
     overflow: hidden; 
     border: none;
@@ -573,4 +573,11 @@ input[type="date"]{
     border-bottom: solid 0.5px #d63031;
     height: fit-content;
     margin-bottom: 50px;
+    width: fit-content;
+}
+.encomenda button{
+    color: #FFF;
+}
+#noencomendas{
+    display: none;
 }

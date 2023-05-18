@@ -1,3 +1,6 @@
+var url_string = window.location.href;
+var url = new URL(url_string);
+var sku = url.searchParams.get("enc");
 function alertaExcluir() {
     Swal.fire({
         title: 'Excluir conta',
@@ -202,7 +205,11 @@ function userLog() {
         firebase.auth().signInWithEmailAndPassword(email, senha)
             .then(function (user) {
                 auth = user;
-                window.location.href = "index.html";
+                if (sku) {
+                    window.location.href = "index.html?enc=" + sku;
+                } else {
+                    window.location.href = "index.html";
+                }
             })
             .catch(function (error) {
                 Swal.fire(
