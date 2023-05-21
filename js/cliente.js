@@ -168,56 +168,38 @@ function inserirUser() {
 function verificaAtividade() {
     var db = firebase.firestore();
     var email = document.getElementById("email").value;
-    db.collection("usuarios").where("email", "==", email).get().then((querySnapshot) => {
-        if (querySnapshot.empty) {
-            db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
-                if (querySnapshot.empty) {
-                    Swal.fire({
-                        title: 'Realize um cadastro',
-                        icon: 'alert',
-                        confirmButtonColor: '#2ecc71',
-                        focusConfirm: false,
-                        confirmButtonText: 'Confirmar'
-                    }).then((result) => {
-                        if (result.isConfirmed) {
-                            window.location.href = "cadastro.html";
-                        }
-                    });
-                }
-                else {
-                    Swal.fire(
-                        'Atenção',
-                        'Credenciais inválidas para esse acesso',
-                        'error'
-                    )
-                }
-            });
-        } else {
-            userLog();
-        }
-    });
-}
-function userLog() {
-    var auth = null;
-    var email = document.getElementById("email").value;
     var senha = document.getElementById("senha").value;
     if ((email != '') && (senha != '')) {
-        firebase.auth().signInWithEmailAndPassword(email, senha)
-            .then(function (user) {
-                auth = user;
-                if (sku) {
-                    window.location.href = "index.html?enc=" + sku;
-                } else {
-                    window.location.href = "index.html";
-                }
-            })
-            .catch(function (error) {
-                Swal.fire(
-                    'Atenção',
-                    'Senha inválida',
-                    'alert'
-                )
-            });
+        db.collection("usuarios").where("email", "==", email).get().then((querySnapshot) => {
+            if (querySnapshot.empty) {
+                db.collection("funcionarios").where("email", "==", email).get().then((querySnapshot) => {
+                    if (querySnapshot.empty) {
+                        Swal.fire({
+                            title: 'Realize um cadastro!',
+                            html: 'Hmm... não encontramos um login com esses dados, deseja cadastrar-se?',
+                            icon: 'alert',
+                            confirmButtonColor: '#2ecc71',
+                            showCloseButton: true,
+                            focusConfirm: true,
+                            confirmButtonText: 'Cadastro'
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                window.location.href = "cadastro.html";
+                            }
+                        });
+                    }
+                    else {
+                        Swal.fire(
+                            'Atenção',
+                            'Credenciais inválidas para esse acesso',
+                            'error'
+                        )
+                    }
+                });
+            } else {
+                userLog(email,senha);
+            }
+        });
     } else {
         Swal.fire(
             'Atenção',
@@ -225,4 +207,23 @@ function userLog() {
             'alert'
         )
     }
+}
+function userLog(email,senha) {
+    auth = null;
+    firebase.auth().signInWithEmailAndPassword(email, senha)
+        .then(function (user) {
+            auth = user;
+            if (sku) {
+                window.location.href = "index.html?enc=" + sku;
+            } else {
+                window.location.href = "index.html";
+            }
+        })
+        .catch(function (error) {
+            Swal.fire(
+                'Atenção',
+                'Senha inválida',
+                'alert'
+            )
+        });
 };

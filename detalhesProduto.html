@@ -21,38 +21,35 @@
 
 <body class="body">
     <header class="header">
-        <div class="logos">
-            <img src="img/bolo.png" id="imgnavbolo"></a>
-            <img src="img/logo.png" id="imgnavlogo"></a>
+        <a href="index.html"><img src="img/bolo.png" id="imgnavbolo"></a>
+      <div class="navheader" id="header">
+        <li class="nav-item">
+          <a class="nav-link" href="login.html">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="cadastro.html">Cadastrar-se</a>
+        </li>
+      </div>
+      <div class="navheaderLogin" id="navheaderLogin">
+        <div class="login">
+          <li class="nav-item">
+            <a class="nav-link" href="encomendasUsuario.html"><img src="img/cupcake.png" height="25px"
+                width="25px">Encomendas</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="perfil.html"><img src="img/user.png" height="25px" width="25px">Meus dados</a>
+          </li>
         </div>
-        <div class="navheader" id="header">
-            <li class="nav-item">
-                <a class="nav-link" href="login.html">Login</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="cadastro.html">Cadastrar-se</a>
-            </li>
-        </div>
-        <div class="navheaderLogin" id="navheaderLogin">
-            <div class="login">
-                <li class="nav-item">
-                    <a class="nav-link" href="encomendasUsuario.html"><img src="img/cupcake.png" height="25px"
-                            width="25px">Encomendas</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="perfil.html"><img src="img/user.png" height="25px" width="25px">Meus
-                        dados</a>
-                </li>
-            </div>
-            <li class="nav-item">
-                <button class="nav-link" id="logOut" onclick="LogOut()"><img src="img/logout.png" height="25px"
-                        width="25px" style="margin-top: 10px;">Sair</button>
-            </li>
-        </div>
+        <li class="nav-item">
+          <button class="nav-link" id="logOut" onclick="LogOut()"><img src="img/logout.png" height="25px" width="25px"
+              style="margin-top: 10px;">Sair</button>
+        </li>
+      </div>
     </header>
+    <a href="index.html" id="logop"><img src="img/logo.png" id="imgnavlogo"></a>
     <div class="main">
         <div class="topo">
-            <h1>Bolos</h1>
+            
         </div>
         <div class="produtos">
             <table class="detalhes">

@@ -11,15 +11,13 @@
   <script src="js/firebase.js"></script>
   <script src="js/logoutCliente.js"></script>
   <script src="js/navSet.js"></script>
+  <script src="bootstrap/js/bootstrap.js"></script>
   <title>Sweet House</title>
 </head>
 
 <body class="body">
   <header class="header">
-    <div class="logos">
-      <img src="img/bolo.png" id="imgnavbolo"></a>
-      <img src="img/logo.png" id="imgnavlogo"></a>
-    </div>
+    <a href="index.html"><img src="img/bolo.png" id="imgnavbolo"></a>
     <div class="navheader" id="header">
       <li class="nav-item">
         <a class="nav-link" href="login.html">Login</a>
@@ -44,12 +42,13 @@
       </li>
     </div>
   </header>
+  <a href="index.html" id="logop"><img src="img/logo.png" id="imgnavlogo"></a>
   <div class="containerIndex">
     <h2 id="titulocontainer">Conheça os nossos produtos</h2>
     <div class="card-produtos">
       <div class="card" style="width: 18rem;">
         <div class="card-body">
-          <a href="produtos.html?categoria=Bolo">
+          <a href="produtos.html?categoria=Bolos">
             <h5 class="card-title">Bolos</h5>
             <img src="img/bolo.jpg" class="card-img-top" alt="...">
             <a href="produtos.html?categoria=Bolo" class="btnProduto">Ver todos</a>
@@ -88,32 +87,69 @@
   <div class="containerIndex">
     <h2 id="titulocontainer">Faça sua encomenda</h2>
     <hr id="hrIndex">
-    <img src="img/expEncomenda.png" style="width:inherit">
+    <img src="img/expEncomenda.png" style="width:80%">
   </div>
-  <footer class="footer">
-    <div class="unidades">
-      <p>Nossas unidades</p>
-      <ul>
-        <li>Pinheiros</li>
-        <li>Liberdade</li>
-        <li>Tatuapé</li>
-        <li>Vila Olímpia</li>
-        <li>Grajaú</li>
-      </ul>
-      <ul>
-        <li>Pinheiros</li>
-        <li>Liberdade</li>
-        <li>Tatuapé</li>
-        <li>Vila Olímpia</li>
-        <li>Grajaú</li>
-      </ul>
+  <div class="containerIndex">
+    <h2 id="titulocontainer">Nossas unidades</h2>
+    <hr id="hrIndex">
+    <div class="containerc">
+      <div class="unidades">
+        <ul>
+          <li>Grajaú</li>
+          <li>Guarulhos</li>
+          <li>Itaquera</li>
+          <li>Jabaquara</li>
+          <li>Liberdade</li>
+        </ul>
+        <ul>
+          <li>Osasco</li>
+          <li>Pinheiros</li>
+          <li>São Bento</li>
+          <li>Tatuapé</li>
+          <li>Vila Olímpia</li>
+        </ul>
+      </div>
+      <div class="carrossel">
+        <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="3000">
+              <img src="img/c/1.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+              <img src="img/c/2.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+              <img src="img/c/3.jpeg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+              <img src="img/c/4.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+              <img src="img/c/5.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+              <img src="img/c/6.jpg" class="d-block w-100" alt="...">
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+              <img src="img/c/7.jpg" class="d-block w-100" alt="...">
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <hr id="hrIndex">
+    <h2>Sempre tem uma pertinho de você!</h2>
+  </div>
+  <div class="containerIndex">
+    <h2 id="titulocontainer">Visite nossas redes sociais</h2>
+    <hr id="hrIndex">
     <div class="redessociais">
-
+      <a href=""><img class="imgredes" src="img/instagram.png"></a>
+      <a href=""><img class="imgredes" src="img/facebook.png"></a>
+      <a href=""><img class="imgredes" src="img/youtube.png"></a>
+      <a href=""><img class="imgredes" src="img/twitter.png"></a>
     </div>
-    <div class="contato">
-
-    </div>
+  </div>
   </footer>
 </body>
 <script>
