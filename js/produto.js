@@ -105,7 +105,7 @@ function addProduto(cnome, csku, cpreco, cdescricao, ccategoria, cstatus) {
     });
 }
 
-function addUnidade(sku, unidade){
+function addUnidade(sku, unidade) {
     db.collection("produtos").where("sku", "==", sku).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             var dados = db.collection("produtos").doc(doc.id);
@@ -265,6 +265,9 @@ function visualizarProdutos(unidade) {
             $("#dados").append("<td scope='col'>" + doc.data().status + "</td>");
             $("#dados").append("<td scope='col' id='edit'><a href='editarProduto.html?sku=" + doc.data().sku + "&unidade=" + unidade + "&categoria=" + doc.data().categoria + "'>Editar</a></td>");
             $("#dados").append("</tr>");
+            
+            document.getElementById("tabelas").style.display = "flex";
+            document.getElementById("carregando").style.display = "none";
         });
     });
 }

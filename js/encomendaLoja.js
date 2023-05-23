@@ -51,6 +51,9 @@ function visualizarP(nomec, produto, tiporet, dataret, stts, id) {
             $("#dados").append("<td scope='col'>" + stts + "</td>");
             $("#dados").append("<td scope='col' id='edit'><a href='detalhesEncomendas.html?uid=" + id + "'>Ver detalhes</a></td>");
             $("#dados").append("</tr>");
+
+            document.getElementById("carregando").style.display = "none";
+            document.getElementById("tabelas").style.display = "flex";
         });
     });
 }

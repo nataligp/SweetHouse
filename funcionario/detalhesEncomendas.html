@@ -48,19 +48,47 @@
         <div class="detalhes-encomenda" id="detalhes-encomenda">
             <div class="dados-encomenda">
                 <h1>Detalhes da encomenda</h1>
-                <p class="nome-produto"></p>
-                <p class="preco-produto"></p>
-                <p class="data-encomenda"></p>
-                <p class="obs-encomenda"></p>
-                <p class="tiporet-encomenda"></p>
-                <p class="status-encomenda"></p>
+                <label class="detalhe-encomenda">
+                    <p class="detalhe">Produto:</p>
+                    <p class="nome-produto"></p>
+                </label>
+                <label class="detalhe-encomenda">
+                    <p class="detalhe">Valor:</p>
+                    <p class="preco-produto"></p>
+                </label>
+
+                <label class="detalhe-encomenda">
+                    <p class="detalhe">Data:</p>
+                    <p class="data-encomenda"></p>
+                </label>
+                <label class="detalhe-encomenda">
+                    <p class="detalhe">Obsercação:</p>
+                    <p class="obs-encomenda"></p>
+                </label>
+                <label class="detalhe-encomenda">
+                    <p class="detalhe">Tipo retirada:</p>
+                    <p class="tiporet-encomenda"></p>
+                </label>
+                <label class="detalhe-encomenda">
+                    <p class="detalhe">Status:</p>
+                    <p class="status-encomenda"></p>
+                </label>
             </div>
             <hr>
             <div class="dados-cliente">
                 <h1>Detalhes do cliente</h1>
-                <p class="nome-cliente"></p>
-                <p class="endereco"></p>
-                <p class="telefone"></p>
+                <label class="detalhe-encomenda">
+                    <p class="detalhe">Nome:</p>
+                    <p class="nome-cliente"></p>
+                </label>
+                <label class="detalhe-encomenda">
+                    <p class="detalhe">Endereço:</p>
+                    <p class="endereco"></p>
+                </label>
+                <label class="detalhe-encomenda">
+                    <p class="detalhe">Telefone:</p>
+                    <p class="telefone"></p>
+                </label>
             </div>
         </div>
         <button id="btn-status" onclick="boxAlterarStatus()">Alterar status do pedido</button>

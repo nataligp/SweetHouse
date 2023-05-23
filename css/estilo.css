@@ -1,12 +1,11 @@
-html, body{
-    margin: 0;
-    height: 100%;
-    width: 100%;
-}.body {
+.body {
     background-color: #732F16;
     display: flex;
     align-items: center;
     flex-direction: column;
+    margin: 0;
+    height: 100%;
+    width: 100%;
 }
 
 .bodyAtlCad {
@@ -320,13 +319,13 @@ select:focus {
     border: none;
     display: flex;
     align-items: end;
+    color: #000;
 }
 
 #logOut img {   
     margin-right: 5px;
     margin-left: 2px;
 }
-
 
 .login {
     display: flex;
@@ -445,6 +444,7 @@ select:focus {
 }
 
 .tabelas {
+    display: none;
     align-self: center;
     margin-top: 40px;
 }
@@ -645,15 +645,15 @@ input[type="date"]{
     display: none;
     flex-direction: row;
     width: 80%;
-    padding: 50px 100px 50px 100px;
     align-self: center;
+    margin-top: 50px;
 }
 .detalhes-encomenda h1{
     font-size: x-large;
     margin-bottom: 30px;
 }
 .dados-encomenda, .dados-cliente{
-    width: 30%;
+    width: 40%;
 }
 .detalhes-encomenda hr{
     border: solid 1px #d63031;
@@ -675,4 +675,14 @@ input[type="date"]{
 button{
     border: none;
     color: #FFF;
+}
+.detalhe-encomenda{
+    display: flex;
+}
+.detalhe{
+    font-weight: bold;
+    margin-right: 10px;
+}
+.obs-encomenda{
+    text-justify: auto;
 }
