@@ -49,7 +49,7 @@ function visualizarP(nomec, produto, tiporet, dataret, stts, id) {
             $("#dados").append("<td scope='col'>" + tiporet + "</td>");
             $("#dados").append("<td scope='col'>" + dataret + "</td>");
             $("#dados").append("<td scope='col'>" + stts + "</td>");
-            $("#dados").append("<td scope='col' id='edit'><a href='detalhesEncomenda.html?uid=" + id + "'>Ver detalhes</a></td>");
+            $("#dados").append("<td scope='col' id='edit'><a href='detalhesEncomendas.html?uid=" + id + "'>Ver detalhes</a></td>");
             $("#dados").append("</tr>");
         });
     });

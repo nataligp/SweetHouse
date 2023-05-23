@@ -23,13 +23,12 @@
     <header class="header">
         <div class="logos">
             <img src="../img/bolo.png" id="imgnavbolo"></a>
-            <img src="../img/LogoManager.png" id="imgnavlogo"></a>
         </div>
         <div class="funcionario">
             <div class="navheaderFuncionario">
                 <li class="nav-item">
-                    <a class="nav-link" href="../funcionario/perfilFuncionario.html"><img src="../img/user.png" height="25px"
-                            width="25px">Meus dados</a>
+                    <a class="nav-link" href="../funcionario/perfilFuncionario.html"><img src="../img/user.png"
+                            height="25px" width="25px">Meus dados</a>
                 </li>
                 <button id="logOut" onclick="LogOut()"><img src="../img/logout.png" height="25px" F
                         width="25px">Sair</button>
@@ -40,29 +39,125 @@
             </div>
         </div>
     </header>
-    <div class="main">
+    <a href="indexFuncionario.html" id="logop"><img src="../img/LogoManager.png" id="imgnavlogo"></a>
+    <div class="main" id="main">
         <div class="topo">
-            <h1>Encomendas'</h1>
+            <h1>Encomenda</h1>
         </div>
-        <div class="tabelas">
-            <table>
-                <thead>
-                    <tr>
-                        <th scope="col">Produto</th>
-                        <th scope="col">Cliente</th>
-                        <th scope="col">Tipo entrega</th>
-                        <th scope="col">Data</th>
-                        <th scope="col">Status</th>
-                    </tr>
-                </thead>
-                <tbody id="dados">
-
-                </tbody>
-            </table>
-
+        <img src="../img/carregando.gif" id="carregando">
+        <div class="detalhes-encomenda" id="detalhes-encomenda">
+            <div class="dados-encomenda">
+                <h1>Detalhes da encomenda</h1>
+                <p class="nome-produto"></p>
+                <p class="preco-produto"></p>
+                <p class="data-encomenda"></p>
+                <p class="obs-encomenda"></p>
+                <p class="tiporet-encomenda"></p>
+                <p class="status-encomenda"></p>
+            </div>
+            <hr>
+            <div class="dados-cliente">
+                <h1>Detalhes do cliente</h1>
+                <p class="nome-cliente"></p>
+                <p class="endereco"></p>
+                <p class="telefone"></p>
+            </div>
+        </div>
+        <button id="btn-status" onclick="boxAlterarStatus()">Alterar status do pedido</button>
+    </div>
+    <div class="main2" id="main2">
+        <div class="form-status">
+            <label for="status">Novo status</label>
+            <select name="status" id="status">
+                <option id="status" value="Aceita">Aceita</option>
+                <option id="status" value="Em produção">Em produção</option>
+                <option id="status" value="Pronta">Pronta</option>
+            </select>
+            <button id="btn" onclick="AlterarStatus()">Alterar</button>
         </div>
     </div>
     <footer class="footer">
     </footer>
 </body>
+<script>
+    var url_string = window.location.href;
+    var url = new URL(url_string);
+    var uid = url.searchParams.get("uid");
+
+    db.collection("encomendas").doc(uid).get().then(function (doc) {
+        const encomendap = document.querySelector(".dadosencomenda");
+        const encomendac = document.querySelector(".dadoscliente");
+        const data = document.querySelector(".data-encomenda")
+        const obs = document.querySelector(".obs-encomenda")
+        const tiporet = document.querySelector(".tiporet-encomenda")
+        const status = document.querySelector(".status-encomenda")
+        vproduto = doc.data().produto;
+        vdata = doc.data().dataret;
+        vobs = doc.data().obs;
+        vtiporet = doc.data().tiporet;
+        vstatus = doc.data().status;
+        data.textContent = vdata;
+        obs.textContent = vobs;
+        tiporet.textContent = vtiporet;
+        status.textContent = vstatus;
+        visualizarProduto(vproduto);
+        visualizarCliente(doc.data().emailc);
+
+    });
+    function visualizarCliente(emailc) {
+        db.collection("usuarios").where("email", "==", emailc).get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                rua = doc.data().rua;
+                num = doc.data().numero;
+                bairro = doc.data().bairro;
+                cep = doc.data().cep;
+                vendereco = rua + ", " + num + " - " + bairro + " (" + cep + ")"
+                vnome = doc.data().nome;
+                vtelefone = doc.data().telefone;
+                const encomendap = document.querySelector(".dadoscliente");
+                const nome = document.querySelector(".nome-cliente");
+                const endereco = document.querySelector(".endereco");
+                const telefone = document.querySelector(".telefone");
+                nome.textContent = vnome;
+                endereco.textContent = vendereco;
+                telefone.textContent = vtelefone;
+            });
+        });
+    }
+    function visualizarProduto(produto) {
+        db.collection("produtos").where("sku", "==", produto).get().then((querySnapshot) => {
+            querySnapshot.forEach((doc) => {
+                vnome = doc.data().nome;
+                vpreco = doc.data().preco;
+                const encomendap = document.querySelector(".dadosencomenda");
+                const nome = document.querySelector(".nome-produto");
+                const preco = document.querySelector(".preco-produto");
+                nome.textContent = vnome;
+                preco.textContent = vpreco;
+            });
+        });
+        document.getElementById("carregando").style.display = "none";
+        document.getElementById("detalhes-encomenda").style.display = "flex";
+        document.getElementById("btn-status").style.display = "flex";
+    }
+    function boxAlterarStatus() {
+        document.getElementById("main").style.display = "none";
+        document.getElementById("main2").style.display = "flex";
+    }
+
+    function AlterarStatus() {
+        let cstatus = document.getElementById("status").value;
+        alert(cstatus)
+        db.collection("encomendas").doc(uid).get().then(function (doc) {
+            var dados = db.collection("encomendas").doc(doc.id);
+            return dados.update({
+                status: cstatus,
+            }).then(() => {
+                location.reload()
+            });
+        });
+    }
+
+</script>
+
 </html>
