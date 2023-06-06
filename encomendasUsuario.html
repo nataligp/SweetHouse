@@ -13,6 +13,7 @@
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.4.1/firebase-storage.js"></script>
     <script src="js/firebase.js"></script>
     <script src="js/logoutCliente.js"></script>
     <title>Minhas encomendas</title>
@@ -20,28 +21,44 @@
 
 <body class="body">
     <header class="header">
-        <div class="logos">
-            <img src="img/bolo.png" id="imgnavbolo"></a>
-            <a href="index.html"><img src="img/logo.png" id="imgnavlogo"></a>
+        <a href="index.html"><img src="img/bolo.png" id="imgnavbolo"></a>
+        <div class="navheader" id="header">
+            <li class="nav-item">
+                <a class="nav-link" href="login.html">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="cadastro.html">Cadastrar-se</a>
+            </li>
         </div>
-        <div class="funcionario">
-            <div class="navheaderFuncionario">
-                <button id="logOut" onclick="LogOut()"><img src="img/logout.png" height="25px" F
-                        width="25px">Sair</button>
+        <div class="navheaderLogin" id="navheaderLogin">
+            <div class="login">
+                <li class="nav-item">
+                    <a class="nav-link" href="encomendasUsuario.html"><img src="img/cupcake.png" height="25px"
+                            width="25px">Encomendas</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="perfil.html"><img src="img/user.png" height="25px" width="25px">Meus
+                        dados</a>
+                </li>
             </div>
+            <li class="nav-item">
+                <button class="nav-link" id="logOut" onclick="LogOut()"><img src="img/logout.png" height="25px"
+                        width="25px" style="margin-top: 10px;">Sair</button>
+            </li>
         </div>
     </header>
+    <a href="index.html" id="logop"><img src="img/logo.png" id="imgnavlogo"></a>
     <div class="main">
         <div class="topo">
             <h1>Minhas encomendas</h1>
-            </div>
-            <div class="encomendas">
+        </div>
+        <div class="encomendas-usuario">
 
-            </div>
         </div>
-        <div id="noencomendas">
-            <h1>Não há encomendas para exibir</h1>
-        </div>
+    </div>
+    <div id="noencomendas">
+        <h1>Não há encomendas para exibir</h1>
+    </div>
     </div>
     <footer class="footer">
     </footer>
@@ -57,28 +74,44 @@
                     document.getElementById("noencomendas").style.display = "flex";
                 } else {
                     querySnapshot.forEach((doc) => {
+                        id = doc.id;
                         data = (doc.data().dataret);
                         status = (doc.data().status);
                         loja = (doc.data().loja);
                         sku = (doc.data().produto);
-                        verEncomenda(sku, data, status, loja);
+                        verEncomenda(id,sku, data, status, loja);
                     });
                 }
             });
-            function verEncomenda(sku, data, status, loja) {
+            function verEncomenda(id,sku, data, status, loja) {
                 db.collection("produtos").where("sku", "==", sku).get().then((querySnapshot) => {
                     querySnapshot.forEach((doc) => {
                         let nomep = doc.data().nome;
                         let vetenc = [nomep, data, status, loja]
-                        const encomendasdiv = document.querySelector(".encomendas");
+                        let categoria = doc.data().categoria;
+                        const encomendasdiv = document.querySelector(".encomendas-usuario");
+                        const div = document.createElement("div");
+                        const img = document.createElement("img");
+                        const a = document.createElement("a");
+                        a.href = "detalhesEncomenda.html?id=" + id + ""
+                        a.textContent = "Ver detalhes"
+                        const storageRef = firebase.storage().ref();
+                        const imageRef = storageRef.child(categoria + "/" + sku + '.jpg');
+                        imageRef.getDownloadURL().then(function (url) {
+                            img.src = url;
+                        });
                         for (I = 0; I <= vetenc.length; I++) {
-                            const div = document.createElement("div");
-                            div.setAttribute("id", "loja")
+                            div.setAttribute("class", "encomenda-usuario")
+                            div.setAttribute("id", "detalhe")
                             const label = document.createElement("label");
+                            label.setAttribute("id", "detalhe")
                             label.textContent = vetenc[I];
+                            a.setAttribute("id", "btn-a");
                             div.appendChild(label);
-                            encomendasdiv.appendChild(div);
                         }
+                        div.appendChild(img);
+                        div.appendChild(a);
+                        encomendasdiv.appendChild(div);
                     })
                 });
             }

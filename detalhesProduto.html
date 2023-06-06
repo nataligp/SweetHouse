@@ -69,6 +69,11 @@
     db.collection("produtos").where("sku", "==", sku).limit(1).get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             let sku = doc.data().sku;
+            let categoria = doc.data().categoria;
+            const p = document.createElement("p");
+            p.textContent = categoria;
+            const topo = document.querySelector(".topo")
+            topo.appendChild(p);
             const storageRef = firebase.storage().ref();
             const imageRef = storageRef.child(categoria + "/" + sku + '.jpg');
             imageRef.getDownloadURL().then(function (url) {

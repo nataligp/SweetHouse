@@ -2,9 +2,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../css/estilo.css">
-    <link rel="stylesheet" href="../bootstrap/css/bootstrap.css">
-    <link rel="icon" href="../img/logocirculo.png">
+    <link rel="stylesheet" href="css/estilo.css">
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.css">
+    <link rel="icon" href="img/logocirculo.png">
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"
@@ -13,38 +13,45 @@
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
-    <script src="../js/firebase.js"></script>
-    <script src="../js/encomendaLoja.js"></script>
-    <script src="../js/logoutFuncionario.js"></script>
+    <script src="js/firebase.js"></script>
+    <script src="js/logoutCliente.js"></script>
     <title>Encomendas</title>
 </head>
 
 <body class="body">
     <header class="header">
-        <div class="logos">
-            <img src="../img/bolo.png" id="imgnavbolo"></a>
+        <a href="index.html"><img src="img/bolo.png" id="imgnavbolo"></a>
+        <div class="navheader" id="header">
+            <li class="nav-item">
+                <a class="nav-link" href="login.html">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="cadastro.html">Cadastrar-se</a>
+            </li>
         </div>
-        <div class="funcionario">
-            <div class="navheaderFuncionario">
+        <div class="navheaderLogin" id="navheaderLogin">
+            <div class="login">
                 <li class="nav-item">
-                    <a class="nav-link" href="../funcionario/perfilFuncionario.html"><img src="../img/user.png"
-                            height="25px" width="25px">Meus dados</a>
+                    <a class="nav-link" href="encomendasUsuario.html"><img src="img/cupcake.png" height="25px"
+                            width="25px">Encomendas</a>
                 </li>
-                <button id="logOut" onclick="LogOut()"><img src="../img/logout.png" height="25px" F
-                        width="25px">Sair</button>
+                <li class="nav-item">
+                    <a class="nav-link" href="perfil.html"><img src="img/user.png" height="25px" width="25px">Meus
+                        dados</a>
+                </li>
             </div>
-            <div class="navUnidade">
-                <img src="../img/unidade.png" height="25px" width="25px">
-                <input type="text" id="unidade">
-            </div>
+            <li class="nav-item">
+                <button class="nav-link" id="logOut" onclick="LogOut()"><img src="img/logout.png" height="25px"
+                        width="25px" style="margin-top: 10px;">Sair</button>
+            </li>
         </div>
     </header>
-    <a href="indexFuncionario.html" id="logop"><img src="../img/LogoManager.png" id="imgnavlogo"></a>
+    <a href="index.html" id="logop"><img src="img/logo.png" id="imgnavlogo"></a>
     <div class="main" id="main">
         <div class="topo">
             <h1>Encomenda</h1>
         </div>
-        <img src="../img/carregando.gif" id="carregando">
+        <img src="img/carregando.gif" id="carregando">
         <div class="detalhes-encomenda" id="detalhes-encomenda">
             <div class="dados-encomenda">
                 <h1>Detalhes da encomenda</h1>
@@ -91,18 +98,6 @@
                 </label>
             </div>
         </div>
-        <button id="btn-status" onclick="boxAlterarStatus()">Alterar status do pedido</button>
-    </div>
-    <div class="main2" id="main2">
-        <div class="form-status">
-            <label for="status">Novo status</label>
-            <select name="status" id="status">
-                <option id="status" value="Aceita">Aceita</option>
-                <option id="status" value="Em produção">Em produção</option>
-                <option id="status" value="Pronta">Pronta</option>
-            </select>
-            <button id="btn" onclick="AlterarStatus()">Alterar</button>
-        </div>
     </div>
     <footer class="footer">
     </footer>
@@ -110,7 +105,8 @@
 <script>
     var url_string = window.location.href;
     var url = new URL(url_string);
-    var uid = url.searchParams.get("uid");
+    var uid = url.searchParams.get("id");
+    let db = firebase.firestore();
 
     db.collection("encomendas").doc(uid).get().then(function (doc) {
         const encomendap = document.querySelector(".dadosencomenda");
@@ -166,25 +162,7 @@
         });
         document.getElementById("carregando").style.display = "none";
         document.getElementById("detalhes-encomenda").style.display = "flex";
-        document.getElementById("btn-status").style.display = "flex";
     }
-    function boxAlterarStatus() {
-        document.getElementById("main").style.display = "none";
-        document.getElementById("main2").style.display = "flex";
-    }
-
-    function AlterarStatus() {
-        let cstatus = document.getElementById("status").value;
-        db.collection("encomendas").doc(uid).get().then(function (doc) {
-            var dados = db.collection("encomendas").doc(doc.id);
-            return dados.update({
-                status: cstatus,
-            }).then(() => {
-                location.reload()
-            });
-        });
-    }
-
 </script>
 
 </html>

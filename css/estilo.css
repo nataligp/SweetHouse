@@ -1,3 +1,7 @@
+body, html{
+    height: 100%;
+    width: 100%;
+}
 .body {
     background-color: #732F16;
     display: flex;
@@ -374,7 +378,6 @@ select:focus {
     background-color: #FFF;
     height: auto;
     width: 100%;
-    height: 100%;
     justify-content: center;
     flex-direction: column;
     justify-content: flex-start;
@@ -514,7 +517,7 @@ input[type="file"] {
     font-weight: 600;
 }
 
-#btn, #btn-status {
+#btn, #btn-status, #btn-a {
     border-radius: 15px;
     width: fit-content;
     align-self: end;
@@ -528,8 +531,11 @@ input[type="file"] {
     margin: 0px 50px 50px 0px;
 }
 
-#btn  a{
+#btn,#btn-a{
     color: #FFF;
+}
+#btn-a{
+    align-self: flex-end;
 }
 
 #noproducts{
@@ -598,14 +604,41 @@ input[type="date"]{
 #noencomendas{
     display: none;
 }
+.encomenda-usuario{
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    border: solid 1px #d63031;
+    border-radius: 20px;
+    width: 30%;
+    margin-top: 50px;
+    align-content: start;
+    justify-content: space-between;
+}
+.encomenda-usuario img{
+    width: 120px;
+    height: 120px;
+    align-self: auto;
+}
+.hr{
+    border: solid 1px #d63031;
+}
+.encomendas-usuario{
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+    width: 80%;
+    justify-content: space-around;
+    align-self: center;
+}
 .produto{
     display: flex;    
     flex-direction: row;  
     justify-content: space-evenly;  
     width: 90%;
-    flex-wrap: wrap;    
     padding: 30px;
     align-self: center;
+    height: 100%;
 }
 .produto .card{
     display: flex;
@@ -685,4 +718,7 @@ button{
 }
 .obs-encomenda{
     text-justify: auto;
+}
+#btn a{
+    color: #FFF !important;
 }
