@@ -11,10 +11,12 @@
         integrity="sha512-pHVGpX7F/27yZ0ISY+VVjyULApbDlD0/X0rgGbTqCE7WFW5MezNTWG/dnhtbBuICzsd0WQPgpE4REBLv+UqChw=="
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-database.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
     <script src="js/firebase.js"></script>
     <script src="js/logoutCliente.js"></script>
+    <script src="js/chat.js"></script>
     <title>Encomendas</title>
 </head>
 
@@ -98,17 +100,32 @@
                 </label>
             </div>
         </div>
+        <div id="chat">
+            <button onclick="chat()"><img src="img/chat.png" alt="chat icon"></button>
+        </div>
     </div>
-    <footer class="footer">
-    </footer>
+    <div id="chatbox">
+        <div id="chat-container">
+            <div id="chat-header" class="chat-header">
+                <h2>Chat</h2>
+            </div>
+            <div id="chat-messages"></div>
+            <div id="chat-input">
+                <input type="text" id="message-input" placeholder="Digite sua mensagem">
+                <button id="send-button" onclick="sendMessage()">Enviar</button>
+            </div>
+            <button id="close-button" onclick="closechat()">Fechar</button>
+        </div>
+    </div>
 </body>
 <script>
     var url_string = window.location.href;
     var url = new URL(url_string);
-    var uid = url.searchParams.get("id");
+    var eid = url.searchParams.get("id");
     let db = firebase.firestore();
+    var sid = "";
 
-    db.collection("encomendas").doc(uid).get().then(function (doc) {
+    db.collection("encomendas").doc(eid).get().then(function (doc) {
         const encomendap = document.querySelector(".dadosencomenda");
         const encomendac = document.querySelector(".dadoscliente");
         const data = document.querySelector(".data-encomenda")
@@ -162,7 +179,10 @@
         });
         document.getElementById("carregando").style.display = "none";
         document.getElementById("detalhes-encomenda").style.display = "flex";
+        document.getElementById("chat").style.display = "flex";
     }
+    
+
 </script>
 
 </html>

@@ -14,8 +14,10 @@
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase-firestore.js"></script>
     <script src="../js/firebase.js"></script>
-    <script src="../js/encomendaLoja.js"></script>
     <script src="../js/logoutFuncionario.js"></script>
+    <script src="../js/encomendaLoja.js"></script>
+    <script src="https://static.zenvia.com/embed/js/zenvia-chat.min.js"></script>
+    <script src="../js/chat.js"></script>
     <title>Encomendas</title>
 </head>
 
@@ -92,6 +94,9 @@
             </div>
         </div>
         <button id="btn-status" onclick="boxAlterarStatus()">Alterar status do pedido</button>
+        <div id="chat">
+            <button onclick="chat()"><img src="../img/chat.png" alt="chat icon"></button>
+        </div>
     </div>
     <div class="main2" id="main2">
         <div class="form-status">
@@ -102,16 +107,30 @@
                 <option id="status" value="Pronta">Pronta</option>
             </select>
             <button id="btn" onclick="AlterarStatus()">Alterar</button>
+            <button id="btn" onclick="Close()">Fechar</button>
         </div>
     </div>
-    <footer class="footer">
-    </footer>
+
+    <div id="chatbox">
+        <div id="chat-container">
+            <div id="chat-header" class="chat-header">
+                <h2>Chat</h2>
+            </div>
+            <div id="chat-messages"></div>
+            <div id="chat-input">
+                <input type="text" id="message-input" placeholder="Digite sua mensagem">
+                <button id="send-button" onclick="sendMessage()">Enviar</button>
+            </div>
+            <button id="close-button" onclick="closechat()">Fechar</button>
+        </div>
+    </div>
 </body>
+
 <script>
+
     var url_string = window.location.href;
     var url = new URL(url_string);
-    var uid = url.searchParams.get("uid");
-
+    var uid = url.searchParams.get("id");
     db.collection("encomendas").doc(uid).get().then(function (doc) {
         const encomendap = document.querySelector(".dadosencomenda");
         const encomendac = document.querySelector(".dadoscliente");
@@ -167,9 +186,9 @@
         document.getElementById("carregando").style.display = "none";
         document.getElementById("detalhes-encomenda").style.display = "flex";
         document.getElementById("btn-status").style.display = "flex";
+        document.getElementById("chat").style.display = "flex";
     }
     function boxAlterarStatus() {
-        document.getElementById("main").style.display = "none";
         document.getElementById("main2").style.display = "flex";
     }
 
@@ -183,6 +202,9 @@
                 location.reload()
             });
         });
+    }
+    function Close() {
+        document.getElementById("main2").style.display = "none";
     }
 
 </script>

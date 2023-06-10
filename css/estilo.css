@@ -1,7 +1,9 @@
-body, html{
+body,
+html {
     height: 100%;
     width: 100%;
 }
+
 .body {
     background-color: #732F16;
     display: flex;
@@ -10,6 +12,7 @@ body, html{
     margin: 0;
     height: 100%;
     width: 100%;
+    position: relative;
 }
 
 .bodyAtlCad {
@@ -29,7 +32,8 @@ body, html{
     padding: 20px;
     margin-top: 20px;
 }
-.containerc{
+
+.containerc {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -37,19 +41,23 @@ body, html{
     align-items: center;
     padding: 20px;
 }
-.unidades{
+
+.unidades {
     display: flex;
     justify-content: space-between;
     width: 35%;
 }
-.unidades ul li{
+
+.unidades ul li {
     font-size: x-large;
     list-style: none;
 }
+
 .containerDados h1 {
     font-weight: normal;
 }
-.containerDados a{
+
+.containerDados a {
     color: #d63031;
 }
 
@@ -84,9 +92,11 @@ body, html{
     justify-content: space-between;
     align-items: center;
 }
-.header a{
+
+.header a {
     display: flex;
 }
+
 #imgnavbolo {
     height: 110px;
     width: 110px;
@@ -95,10 +105,12 @@ body, html{
 #imgnavlogo {
     height: 90px;
 }
-#logop{
+
+#logop {
     position: absolute;
     margin-top: 20px;
 }
+
 .navheaderLogin {
     display: none;
     flex-direction: column;
@@ -326,7 +338,7 @@ select:focus {
     color: #000;
 }
 
-#logOut img {   
+#logOut img {
     margin-right: 5px;
     margin-left: 2px;
 }
@@ -345,6 +357,7 @@ select:focus {
     color: #FFF;
     width: 50%;
 }
+
 .menu {
     display: flex;
     width: 100%;
@@ -381,6 +394,7 @@ select:focus {
     justify-content: center;
     flex-direction: column;
     justify-content: flex-start;
+    position: relative;
 }
 
 .main img {
@@ -388,12 +402,13 @@ select:focus {
     height: 300px;
     align-self: center;
 }
-.main2{
+
+.main2 {
     width: 100%;
     height: 100%;
     display: none;
     background-color: #00000073;
-    position: relative;
+    position: absolute;
     justify-content: center;
     align-items: center;
 }
@@ -517,13 +532,16 @@ input[type="file"] {
     font-weight: 600;
 }
 
-#btn, #btn-status, #btn-a {
+#btn,
+#btn-status,
+#btn-a {
     border-radius: 15px;
     width: fit-content;
     align-self: end;
     background-color: #d63031;
     padding: 10px;
 }
+
 #btn-status {
     display: none;
     border: none;
@@ -531,80 +549,94 @@ input[type="file"] {
     margin: 0px 50px 50px 0px;
 }
 
-#btn,#btn-a{
+#btn,
+#btn-a {
     color: #FFF;
 }
-#btn-a{
+
+#btn-a {
     align-self: flex-end;
 }
 
-#noproducts{
+#noproducts {
     display: none;
     flex-direction: column;
     align-items: center;
     margin-top: 40px;
     font-family: "Calibri";
 }
-#noproducts img{
+
+#noproducts img {
     height: 100px;
     width: 100px;
     margin-bottom: 20px;
 }
-.encomenda{
+
+.encomenda {
     padding-left: 50px;
 }
-.encomenda p{
+
+.encomenda p {
     margin-top: 50px;
     font-size: large;
 }
 
-#loja label{
+#loja label {
     margin-left: 5px;
     margin-top: 25px;
 }
-.opcoes{
+
+.opcoes {
     margin-top: 25px;
 }
 
-input[type="date"]{
+input[type="date"] {
     height: fit-content;
     border: none;
     border-bottom: solid 0.5px #d63031;
     padding: 5px;
 }
-#carregando{
+
+#carregando {
     margin-top: 25px;
-    height:30px;
-    width:30px;
+    height: 30px;
+    width: 30px;
 }
-.loja-input:checked[type="radio"]{
+
+.loja-input:checked[type="radio"] {
     background-color: #d63031 !important;
 }
-#obsenc{
+
+#obsenc {
     resize: vertical;
-    overflow: hidden; 
+    overflow: hidden;
     border: none;
     border-bottom: solid 0.5px #d63031;
     margin-bottom: 40px;
-}  
-.encomenda{
+}
+
+.encomenda {
     display: flex;
     flex-direction: column;
 }
-.encomenda input[type="text"]{
+
+.encomenda input[type="text"] {
     border: none;
     border-bottom: solid 0.5px #d63031;
     height: fit-content;
     margin-bottom: 50px;
     width: fit-content;
 }
-.encomenda button{
+
+.encomenda button {
     color: #FFF;
 }
-#noencomendas{
+
+#noencomendas {
     display: none;
 }
-.encomenda-usuario{
+
+.encomenda-usuario {
     display: flex;
     flex-direction: column;
     padding: 40px;
@@ -615,15 +647,18 @@ input[type="date"]{
     align-content: start;
     justify-content: space-between;
 }
-.encomenda-usuario img{
+
+.encomenda-usuario img {
     width: 120px;
     height: 120px;
     align-self: auto;
 }
-.hr{
+
+.hr {
     border: solid 1px #d63031;
 }
-.encomendas-usuario{
+
+.encomendas-usuario {
     display: flex;
     flex-direction: row;
     height: 100%;
@@ -631,22 +666,25 @@ input[type="date"]{
     justify-content: space-around;
     align-self: center;
 }
-.produto{
-    display: flex;    
-    flex-direction: row;  
-    justify-content: space-evenly;  
+
+.produto {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
     width: 90%;
     padding: 30px;
     align-self: center;
     height: 100%;
 }
-.produto .card{
+
+.produto .card {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
 }
-.produto .card-body{
+
+.produto .card-body {
     padding: 20px;
     width: max-content;
     height: max-content;
@@ -655,43 +693,51 @@ input[type="date"]{
     align-items: center;
 }
 
-.produto .card img{
+.produto .card img {
     width: 230px;
     height: 230px;
     padding: 15px;
 }
-.carrossel{
+
+.carrossel {
     width: 250px;
 }
-.redessociais{
+
+.redessociais {
     width: 15%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
-.imgredes{
+
+.imgredes {
     width: 30px;
     height: 30px;
 }
 
-.detalhes-encomenda{
+.detalhes-encomenda {
     display: none;
     flex-direction: row;
     width: 80%;
     align-self: center;
     margin-top: 50px;
 }
-.detalhes-encomenda h1{
+
+.detalhes-encomenda h1 {
     font-size: x-large;
     margin-bottom: 30px;
 }
-.dados-encomenda, .dados-cliente{
+
+.dados-encomenda,
+.dados-cliente {
     width: 40%;
 }
-.detalhes-encomenda hr{
+
+.detalhes-encomenda hr {
     border: solid 1px #d63031;
 }
-.form-status{
+
+.form-status {
     display: flex;
     flex-direction: column;
     width: 40%;
@@ -701,24 +747,104 @@ input[type="date"]{
     border-radius: 20px;
     padding: 30px;
 }
-.form-status select{
+
+.form-status select {
     margin-top: 15px;
     margin-bottom: 15px;
 }
-button{
+
+button {
     border: none;
     color: #FFF;
 }
-.detalhe-encomenda{
+
+.detalhe-encomenda {
     display: flex;
 }
-.detalhe{
+
+.detalhe {
     font-weight: bold;
     margin-right: 10px;
 }
-.obs-encomenda{
+
+.obs-encomenda {
     text-justify: auto;
 }
-#btn a{
+
+#btn a {
     color: #FFF !important;
+}
+
+#chat {
+    display: none;
+    width: 100%;
+    justify-content: end;
+}
+
+#chat button {
+    background: none;
+    margin: 0% 5% 0% 0%;
+}
+
+#chat img {
+    height: 65px;
+    width: 65px;
+}
+#chatbox{
+    display: none;
+    position:absolute;
+    height: 100%;
+    width: 100%;
+    background-color: #00000073;
+    justify-content: center;
+    align-items: center;
+}
+
+#chat-container {
+    background-color: #FFF;
+    width: 300px;
+    height: 60%;
+    border: 1px solid #ccc;
+    padding: 10px;    
+    display: flex;
+    flex-direction: column;
+    border-radius: 30px;
+    padding: 20px;
+}
+
+#chat-header {
+    text-align: center;
+    margin-bottom: 10px;
+    font-size: medium;
+}
+
+#chat-messages {
+    height: 200px;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
+#chat-input {
+    display: flex;
+}
+
+#user-input,
+#message-input {
+    flex: 1;
+    padding: 5px;
+    border: none;
+    border-bottom: 1px solid #d63031;
+}
+
+#send-button {
+    padding: 5px 10px;
+    background-color: #d63031;
+}
+#close-button {
+    align-self: center;
+    margin-top: 5px;
+    padding: 5px 10px;
+    background-color: #FFF;
+    border: none;
+    color: #d63031;
 }
