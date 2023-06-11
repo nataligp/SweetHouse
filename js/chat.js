@@ -3,7 +3,14 @@ var url_string = window.location.href;
 var url = new URL(url_string);
 var eid = url.searchParams.get("id");
 var sid = "";
+var sendertype = "";
 
+if (url_string.includes("funcionario")) {
+    sendertype = "func"
+}
+else{
+    sendertype = "client"
+}
 firebase.auth().onAuthStateChanged((user) => {
     if (user) {
         uid = user.uid;
@@ -14,11 +21,14 @@ db.collection("mensagens").orderBy('timestamp', 'asc').where("session", "==", ei
     if (!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
             content = doc.data().content;
+            usertype = doc.data().sendertype;
             var chatMessagesElement = document.getElementById("chat-messages");
             var messageElement = document.createElement("p");
             messageElement.textContent = content;
+            if (usertype != sendertype) {
+                messageElement.style.alignSelf = "start"
+            }
             chatMessagesElement.appendChild(messageElement);
-            chatMessagesElement.scrollTop = chatMessagesElement.scrollHeight;
         });
     }
 });
@@ -32,12 +42,12 @@ function closechat() {
 function sendMessage() {
     var messageInput = document.getElementById("message-input");
     var messageContent = messageInput.value;
-    var data = new Date()
 
     if (messageContent.trim() !== "") {
         db.collection("mensagens").add({
             session: eid,
             sender: uid,
+            sendertype: sendertype,
             content: messageContent,
             read: 'false',
             timestamp: firebase.firestore.Timestamp.now()
@@ -49,10 +59,13 @@ function sendMessage() {
     }
 }
 
-function displayMessages(content) {
+function displayMessages(content, usertype) {
     var chatMessagesElement = document.getElementById("chat-messages");
     var messageElement = document.createElement("p");
     messageElement.textContent = content;
+    if (usertype != sendertype) {
+        messageElement.style.alignSelf = "start"
+    }
     chatMessagesElement.appendChild(messageElement);
 }
 
@@ -60,6 +73,7 @@ function Catch() {
     db.collection("mensagens").where("session", "==", eid).where("read", "==", "false").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             content = doc.data().content;
+            usertype = doc.data().sendertype;
             return db.collection("mensagens").doc(doc.id).update({
                 read: 'true'
             }).then(() => {
