@@ -4,11 +4,12 @@ var url = new URL(url_string);
 var eid = url.searchParams.get("id");
 var sid = "";
 var sendertype = "";
+db = firebase.firestore();
 
 if (url_string.includes("funcionario")) {
     sendertype = "func"
 }
-else{
+else {
     sendertype = "client"
 }
 firebase.auth().onAuthStateChanged((user) => {
@@ -16,7 +17,7 @@ firebase.auth().onAuthStateChanged((user) => {
         uid = user.uid;
     }
 })
-db = firebase.firestore();
+
 db.collection("mensagens").orderBy('timestamp', 'asc').where("session", "==", eid).where("read", "==", "true").get().then((querySnapshot) => {
     if (!querySnapshot.empty) {
         querySnapshot.forEach((doc) => {
@@ -25,13 +26,16 @@ db.collection("mensagens").orderBy('timestamp', 'asc').where("session", "==", ei
             var chatMessagesElement = document.getElementById("chat-messages");
             var messageElement = document.createElement("p");
             messageElement.textContent = content;
-            if (usertype != sendertype) {
-                messageElement.style.alignSelf = "start"
+            if (usertype == sendertype) {
+                messageElement.style.alignSelf = "end"
             }
             chatMessagesElement.appendChild(messageElement);
         });
     }
 });
+
+setInterval(function () { Catch2()}, 1000);
+
 function chat() {
     document.getElementById("chatbox").style.display = "flex";
 }
@@ -39,12 +43,12 @@ function closechat() {
     document.getElementById("chatbox").style.display = "none";
 
 }
-function sendMessage() {
+async function sendMessage() {
     var messageInput = document.getElementById("message-input");
     var messageContent = messageInput.value;
 
     if (messageContent.trim() !== "") {
-        db.collection("mensagens").add({
+        const ref = await db.collection("mensagens").add({
             session: eid,
             sender: uid,
             sendertype: sendertype,
@@ -52,9 +56,9 @@ function sendMessage() {
             read: 'false',
             timestamp: firebase.firestore.Timestamp.now()
         });
-
+        const refId = ref.id;
         messageInput.value = "";
-        Catch();
+        Catch(refId)
 
     }
 }
@@ -63,13 +67,21 @@ function displayMessages(content, usertype) {
     var chatMessagesElement = document.getElementById("chat-messages");
     var messageElement = document.createElement("p");
     messageElement.textContent = content;
-    if (usertype != sendertype) {
-        messageElement.style.alignSelf = "start"
+    if (usertype == sendertype) {
+        messageElement.style.alignSelf = "end"
     }
     chatMessagesElement.appendChild(messageElement);
 }
 
-function Catch() {
+function Catch(id) {
+    db.collection("mensagens").doc(id).get().then((doc) => {
+        content = doc.data().content;
+        usertype = doc.data().sendertype;
+        displayMessages(content, usertype);
+    });
+}
+
+function Catch2() {
     db.collection("mensagens").where("session", "==", eid).where("read", "==", "false").get().then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
             content = doc.data().content;
@@ -77,7 +89,9 @@ function Catch() {
             return db.collection("mensagens").doc(doc.id).update({
                 read: 'true'
             }).then(() => {
-                displayMessages(content);
+                if (sendertype != usertype) {
+                    displayMessages(content, usertype);
+                }
             });
         });
     });
