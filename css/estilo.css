@@ -774,7 +774,7 @@ button {
 }
 
 #encomenda-footer {
-    display: flex;
+    display: none;
     width: 25%;
     align-self: flex-end;
     padding: 20px;
