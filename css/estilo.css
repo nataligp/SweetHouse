@@ -546,7 +546,6 @@ input[type="file"] {
     display: none;
     border: none;
     color: #FFF;
-    margin: 0px 50px 50px 0px;
 }
 
 #btn,
@@ -741,7 +740,6 @@ input[type="date"] {
     display: flex;
     flex-direction: column;
     width: 40%;
-    height: 40%;
     position: relative;
     background-color: #FFF;
     border-radius: 20px;
@@ -775,10 +773,16 @@ button {
     color: #FFF !important;
 }
 
-#chat {
-    display: none;
-    width: 100%;
+#encomenda-footer {
+    display: flex;
+    width: 25%;
+    align-self: flex-end;
+    padding: 20px;
     justify-content: end;
+}
+#btn-chat{
+    background: none;
+    margin-left: 20px;
 }
 
 #chat button {
@@ -786,7 +790,7 @@ button {
     margin: 0% 5% 0% 0%;
 }
 
-#chat img {
+#encomenda-footer img {
     height: 65px;
     width: 65px;
 }
@@ -869,4 +873,10 @@ button {
     background-color: #FFF;
     border: none;
     color: #d63031;
+}
+.btns{
+    align-self: flex-end;
+}
+.encomenda-footer{
+
 }

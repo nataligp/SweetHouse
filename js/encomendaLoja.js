@@ -53,6 +53,7 @@ function visualizarP(nomec, produto, tiporet, dataret, stts, id) {
             $("#dados").append("</tr>");
 
             document.getElementById("carregando").style.display = "none";
+            document.getElementById("tabelas").style.display = "flex";
         });
     });
 }

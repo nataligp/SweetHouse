@@ -93,9 +93,9 @@
                 </label>
             </div>
         </div>
-        <button id="btn-status" onclick="boxAlterarStatus()">Alterar status do pedido</button>
-        <div id="chat">
-            <button onclick="chat()"><img src="../img/chat.png" alt="chat icon"></button>
+        <div id="encomenda-footer">
+            <button id="btn-status" onclick="boxAlterarStatus()">Alterar status do pedido</button>
+            <button id="btn-chat"  onclick="chat()"><img src="../img/chat.png" alt="chat icon"></button>
         </div>
     </div>
     <div class="main2" id="main2">
@@ -106,8 +106,10 @@
                 <option id="status" value="Em produção">Em produção</option>
                 <option id="status" value="Pronta">Pronta</option>
             </select>
-            <button id="btn" onclick="AlterarStatus()">Alterar</button>
-            <button id="btn" onclick="Close()">Fechar</button>
+            <div class="btns">
+                <button id="btn" onclick="AlterarStatus()">Alterar</button>
+                <button id="btn" onclick="Close()">Fechar</button>
+            </div>
         </div>
     </div>
 
